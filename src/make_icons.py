@@ -1,13 +1,10 @@
-# Home-screen icon: cobalt azulejo tile with a saffron speech bubble and a tilde, drawn at 4x and box-downsampled.
+# Home-screen icon: solid cobalt field with a saffron speech bubble and a tilde, drawn at 4x and box-downsampled.
 import zlib, struct, os, math
 os.chdir(os.path.dirname(os.path.abspath(__file__)) + '/..')
 COB = (39, 69, 196); SAF = (227, 150, 26); PAPER = (238, 241, 248); INK = (20, 29, 69)
 
 def color(x, y):  # x, y in 0..1
-    c = COB
-    # corner quarter-circles (tile pattern)
-    for cx, cy in ((0, 0), (1, 0), (0, 1), (1, 1)):
-        if math.hypot(x - cx, y - cy) < .17: c = PAPER
+    c = COB  # solid cobalt field
     # speech bubble: rounded box + tail
     bx0, by0, bx1, by1, r = .2, .24, .8, .66, .12
     qx = min(max(x, bx0 + r), bx1 - r); qy = min(max(y, by0 + r), by1 - r)
