@@ -1,0 +1,322 @@
+# Poco a Poco deck. One card per line: spanish | english | tag | spanish sentence | english sentence
+# Sections: [v] verbs, [n] nouns + time words, [x] everything else (phrases first).
+# build.py interleaves the three sections so new cards come in a mix.
+# Alternatives in the Spanish field are separated by "/" (first one is shown).
+
+[v]
+ser|to be (permanent)|v|Mi hermana es muy alta.|My sister is very tall.
+estar|to be (state, location)|v|¿Dónde está el baño?|Where is the bathroom?
+tener|to have|v|Tengo dos hermanos.|I have two brothers.
+hacer|to do / to make|v|¿Qué vas a hacer esta noche?|What are you going to do tonight?
+ir|to go|v|Vamos a ir al cine mañana.|We're going to go to the movies tomorrow.
+poder|to be able to / can|v|¿Puedes ayudarme un momento?|Can you help me for a moment?
+decir|to say / to tell|v|¿Qué dijo el médico?|What did the doctor say?
+querer|to want / to love|v|Quiero aprender español este año.|I want to learn Spanish this year.
+saber|to know (facts)|v|No sé dónde está la estación.|I don't know where the station is.
+ver|to see|v|¿Viste la película anoche?|Did you see the movie last night?
+dar|to give|v|Me dio un regalo para mi cumpleaños.|He gave me a gift for my birthday.
+venir|to come|v|¿A qué hora vienes a casa?|What time are you coming home?
+conocer|to know (people, places)|v|¿Conoces a mi amigo Carlos?|Do you know my friend Carlos?
+hablar|to speak / to talk|v|Ella habla español e inglés.|She speaks Spanish and English.
+llegar|to arrive|v|El tren llega a las ocho.|The train arrives at eight.
+pasar|to happen / to pass|v|¿Qué te pasa? Estás muy callado.|What's wrong? You're very quiet.
+deber|should / must|v|Debes descansar un poco más.|You should rest a little more.
+poner|to put|v|Pon las llaves en la mesa.|Put the keys on the table.
+parecer|to seem|v|Me parece una buena idea.|It seems like a good idea to me.
+quedar|to stay / to meet up|v|¿Quedamos a las seis en la plaza?|Shall we meet at six in the square?
+creer|to believe / to think|v|Creo que va a llover hoy.|I think it's going to rain today.
+llevar|to carry / to wear / to take|v|Siempre llevo un libro en la mochila.|I always carry a book in my backpack.
+dejar|to leave (something) / to let|v|Deja el abrigo aquí, si quieres.|Leave your coat here, if you want.
+seguir|to follow / to keep going|v|Sigue todo recto y luego a la izquierda.|Keep going straight and then left.
+encontrar|to find|v|No encuentro mis gafas.|I can't find my glasses.
+llamar|to call|v|Te llamo cuando llegue.|I'll call you when I arrive.
+pensar|to think|v|Estoy pensando en ir a México.|I'm thinking about going to Mexico.
+salir|to leave / to go out|v|Salimos de casa a las siete.|We leave the house at seven.
+volver|to return / to come back|v|Vuelvo en cinco minutos.|I'll be back in five minutes.
+tomar|to take / to drink|v|¿Quieres tomar un café conmigo?|Do you want to have a coffee with me?
+entender|to understand|v|No entiendo lo que dice.|I don't understand what he's saying.
+trabajar|to work|v|Trabajo en una oficina en el centro.|I work in an office downtown.
+vivir|to live|v|Vivimos en un apartamento pequeño.|We live in a small apartment.
+comer|to eat|v|¿A qué hora comemos hoy?|What time are we eating today?
+beber|to drink|v|Hay que beber más agua.|You have to drink more water.
+escribir|to write|v|Le escribo un mensaje a mi madre.|I'm writing a message to my mother.
+leer|to read|v|Me gusta leer antes de dormir.|I like to read before going to sleep.
+escuchar|to listen|v|Escucha bien, es muy importante.|Listen carefully, it's very important.
+esperar|to wait / to hope|v|Espérame aquí, ya vuelvo.|Wait for me here, I'll be right back.
+buscar|to look for|v|Estoy buscando una farmacia.|I'm looking for a pharmacy.
+necesitar|to need|v|Necesito un poco más de tiempo.|I need a little more time.
+gustar|to like (to please)|v|Me gusta mucho esta canción.|I really like this song.
+empezar|to begin / to start|v|La clase empieza a las nueve.|The class starts at nine.
+terminar|to finish|v|¿Ya terminaste la tarea?|Did you already finish the homework?
+comprar|to buy|v|Voy a comprar pan y leche.|I'm going to buy bread and milk.
+pagar|to pay|v|¿Puedo pagar con tarjeta?|Can I pay by card?
+abrir|to open|v|¿A qué hora abre el museo?|What time does the museum open?
+cerrar|to close|v|Cierra la puerta, hace frío.|Close the door, it's cold.
+dormir|to sleep|v|Anoche no dormí bien.|I didn't sleep well last night.
+sentir|to feel / to be sorry|v|Lo siento, llegué tarde.|I'm sorry, I arrived late.
+jugar|to play (a game, a sport)|v|Los niños juegan en el parque.|The kids play in the park.
+usar|to use|v|¿Puedo usar tu teléfono?|Can I use your phone?
+ayudar|to help|v|¿Me ayudas con estas bolsas?|Will you help me with these bags?
+aprender|to learn|v|Aprendo algo nuevo cada día.|I learn something new every day.
+preguntar|to ask|v|Voy a preguntar al camarero.|I'm going to ask the waiter.
+contestar|to answer|v|No contesta el teléfono.|He's not answering the phone.
+caminar|to walk|v|Me gusta caminar por la playa.|I like to walk along the beach.
+correr|to run|v|Corro tres veces a la semana.|I run three times a week.
+cocinar|to cook|v|Mi padre cocina muy bien.|My father cooks very well.
+viajar|to travel|v|Queremos viajar a España en verano.|We want to travel to Spain in the summer.
+recordar|to remember|v|No recuerdo su nombre.|I don't remember his name.
+olvidar|to forget|v|Olvidé mi paraguas en el autobús.|I forgot my umbrella on the bus.
+perder|to lose / to miss (a train)|v|Perdimos el último tren.|We missed the last train.
+ganar|to win / to earn|v|Nuestro equipo ganó el partido.|Our team won the game.
+cambiar|to change|v|Quiero cambiar de trabajo.|I want to change jobs.
+mirar|to look at / to watch|v|Mira, allí está el mar.|Look, there's the sea.
+traer|to bring|v|¿Puedes traer algo de beber?|Can you bring something to drink?
+enviar/mandar|to send|v|Te envío las fotos esta tarde.|I'll send you the photos this afternoon.
+ducharse|to shower|v|Me ducho por la mañana.|I shower in the morning.
+levantarse|to get up|v|Me levanto a las seis y media.|I get up at six thirty.
+acostarse|to go to bed|v|Los niños se acuestan temprano.|The kids go to bed early.
+sentarse|to sit down|v|Siéntate aquí, a mi lado.|Sit here, next to me.
+limpiar|to clean|v|Hoy tenemos que limpiar la cocina.|Today we have to clean the kitchen.
+conducir/manejar|to drive|v|No me gusta conducir de noche.|I don't like driving at night.
+bailar|to dance|v|¿Bailamos esta canción?|Shall we dance to this song?
+cantar|to sing|v|Mi abuela canta mientras cocina.|My grandmother sings while she cooks.
+descansar|to rest|v|El domingo voy a descansar.|On Sunday I'm going to rest.
+entrar|to enter / to go in|v|Puedes entrar, la puerta está abierta.|You can go in, the door is open.
+subir|to go up / to get in (a car)|v|Sube al coche, te llevo.|Get in the car, I'll give you a ride.
+bajar|to go down / to get off|v|Bajamos en la próxima parada.|We get off at the next stop.
+
+[n]
+el día|the day|n|Que tengas un buen día.|Have a good day.
+la noche|the night|n|Buenas noches, hasta mañana.|Good night, see you tomorrow.
+la mañana|the morning|n|Trabajo por la mañana.|I work in the morning.
+la tarde|the afternoon / evening|n|Nos vemos esta tarde.|See you this afternoon.
+hoy|today|adv|Hoy hace mucho calor.|It's very hot today.
+mañana|tomorrow|adv|Mañana es mi cumpleaños.|Tomorrow is my birthday.
+ayer|yesterday|adv|Ayer fuimos a la playa.|Yesterday we went to the beach.
+ahora|now|adv|Ahora no puedo, estoy ocupado.|I can't right now, I'm busy.
+la semana|the week|n|La semana que viene tengo vacaciones.|Next week I'm on vacation.
+el mes|the month|n|Voy a España el mes que viene.|I'm going to Spain next month.
+el año|the year|n|Este año quiero viajar más.|This year I want to travel more.
+la hora|the hour / the time (of day)|n|¿Qué hora es?|What time is it?
+el tiempo|the time / the weather|n|No tengo tiempo para eso.|I don't have time for that.
+la vez|the time (occasion)|n|Es la primera vez que vengo aquí.|It's the first time I've come here.
+la casa|the house / home|n|Estoy en casa todo el día.|I'm at home all day.
+la puerta|the door|n|Alguien está en la puerta.|Someone is at the door.
+la ventana|the window|n|Abre la ventana, por favor.|Open the window, please.
+la mesa|the table|n|La comida está en la mesa.|The food is on the table.
+la silla|the chair|n|Esta silla no es muy cómoda.|This chair isn't very comfortable.
+la cama|the bed|n|Me voy a la cama, estoy cansado.|I'm going to bed, I'm tired.
+la cocina|the kitchen|n|Todos están en la cocina.|Everyone is in the kitchen.
+el baño|the bathroom|n|Perdón, ¿dónde está el baño?|Excuse me, where is the bathroom?
+la habitación|the room / the bedroom|n|Mi habitación es pequeña pero bonita.|My room is small but pretty.
+la llave|the key|n|¿Tienes la llave del coche?|Do you have the car key?
+el teléfono|the phone|n|Se me olvidó el teléfono en casa.|I left my phone at home.
+el libro|the book|n|Estoy leyendo un libro muy bueno.|I'm reading a really good book.
+el agua|the water|n|Un vaso de agua, por favor.|A glass of water, please.
+el café|the coffee|n|Tomo un café con leche cada mañana.|I have a coffee with milk every morning.
+la leche|the milk|n|No queda leche en la nevera.|There's no milk left in the fridge.
+el pan|the bread|n|El pan de esta panadería es buenísimo.|The bread at this bakery is great.
+la comida|the food / the meal|n|Me encanta la comida mexicana.|I love Mexican food.
+la carne|the meat|n|No como carne roja.|I don't eat red meat.
+el pollo|the chicken|n|Quiero arroz con pollo.|I want rice with chicken.
+el pescado|the fish (food)|n|El pescado está muy fresco hoy.|The fish is very fresh today.
+el arroz|the rice|n|El arroz necesita veinte minutos.|The rice needs twenty minutes.
+la fruta|the fruit|n|Como fruta todos los días.|I eat fruit every day.
+el huevo|the egg|n|Desayuno dos huevos fritos.|I have two fried eggs for breakfast.
+la cerveza|the beer|n|Dos cervezas bien frías, por favor.|Two really cold beers, please.
+el vino|the wine|n|¿Prefieres vino tinto o blanco?|Do you prefer red or white wine?
+la cuenta|the bill / the check|n|La cuenta, por favor.|The check, please.
+el desayuno|the breakfast|n|El desayuno está listo.|Breakfast is ready.
+la cena|the dinner|n|¿Qué hay para la cena?|What's for dinner?
+la persona|the person|n|Es una persona muy amable.|She's a very kind person.
+el hombre|the man|n|Ese hombre es mi vecino.|That man is my neighbor.
+la mujer|the woman / the wife|n|La mujer de Juan es médica.|Juan's wife is a doctor.
+el niño|the boy / the child|n|El niño tiene cinco años.|The boy is five years old.
+la niña|the girl|n|La niña está jugando afuera.|The girl is playing outside.
+el amigo|the friend (male)|n|Voy a cenar con un amigo.|I'm having dinner with a friend.
+la amiga|the friend (female)|n|Mi amiga vive en Madrid.|My friend lives in Madrid.
+la familia|the family|n|Toda mi familia vive cerca.|My whole family lives nearby.
+la madre|the mother|n|Mi madre es de Colombia.|My mother is from Colombia.
+el padre|the father|n|Mi padre trabaja en un hospital.|My father works at a hospital.
+el hermano|the brother|n|Mi hermano es mayor que yo.|My brother is older than me.
+la hermana|the sister|n|Mi hermana tiene dos hijos.|My sister has two kids.
+el hijo|the son|n|Su hijo estudia en la universidad.|Her son studies at the university.
+la hija|the daughter|n|Nuestra hija se llama Lucía.|Our daughter's name is Lucía.
+el perro|the dog|n|El perro quiere salir a pasear.|The dog wants to go out for a walk.
+el gato|the cat|n|El gato duerme en el sofá.|The cat sleeps on the sofa.
+la ciudad|the city|n|Es una ciudad muy bonita.|It's a very pretty city.
+la calle|the street|n|Vivo en esta calle.|I live on this street.
+el centro|the center / downtown|n|¿Cómo llego al centro?|How do I get downtown?
+la tienda|the store|n|La tienda cierra a las nueve.|The store closes at nine.
+el mercado|the market|n|Compramos fruta en el mercado.|We buy fruit at the market.
+el restaurante|the restaurant|n|Conozco un restaurante muy bueno.|I know a really good restaurant.
+el hotel|the hotel|n|El hotel está cerca de la playa.|The hotel is near the beach.
+la playa|the beach|n|Vamos a la playa el sábado.|We're going to the beach on Saturday.
+el parque|the park|n|Hay un parque al lado de mi casa.|There's a park next to my house.
+la estación|the station / the season|n|La estación está a diez minutos.|The station is ten minutes away.
+el aeropuerto|the airport|n|Te llevo al aeropuerto mañana.|I'll take you to the airport tomorrow.
+el coche/el carro/el auto|the car|n|Mi coche es viejo, pero funciona.|My car is old, but it works.
+el autobús|the bus|n|El autobús pasa cada quince minutos.|The bus comes every fifteen minutes.
+el tren|the train|n|Prefiero ir en tren.|I prefer to go by train.
+el dinero|the money|n|No tengo dinero en efectivo.|I don't have any cash.
+el trabajo|the work / the job|n|Tengo mucho trabajo esta semana.|I have a lot of work this week.
+la escuela|the school|n|Los niños van a la escuela a pie.|The kids walk to school.
+el médico|the doctor|n|Tengo cita con el médico a las tres.|I have a doctor's appointment at three.
+el problema|the problem|n|No hay ningún problema.|There's no problem at all.
+la pregunta|the question|n|¿Puedo hacer una pregunta?|Can I ask a question?
+la idea|the idea|n|¡Qué buena idea!|What a good idea!
+la vida|the life|n|Así es la vida.|That's life.
+el mundo|the world|n|Quiero viajar por todo el mundo.|I want to travel all over the world.
+el país|the country|n|¿De qué país eres?|What country are you from?
+el nombre|the name|n|¿Cuál es tu nombre?|What's your name?
+la palabra|the word|n|No conozco esta palabra.|I don't know this word.
+el idioma|the language|n|Hablo tres idiomas.|I speak three languages.
+la música|the music|n|Pon un poco de música.|Put on some music.
+la película|the movie|n|La película empieza a las diez.|The movie starts at ten.
+el sol|the sun|n|Hoy hace sol.|It's sunny today.
+la lluvia|the rain|n|Me gusta el sonido de la lluvia.|I like the sound of the rain.
+el mar|the sea|n|Desde aquí se ve el mar.|You can see the sea from here.
+la ropa|the clothes|n|Tengo que lavar la ropa.|I have to wash the clothes.
+los zapatos|the shoes|n|Estos zapatos son nuevos.|These shoes are new.
+la cabeza|the head|n|Me duele la cabeza.|My head hurts.
+la mano|the hand|n|Lávate las manos antes de comer.|Wash your hands before eating.
+el cumpleaños|the birthday|n|¡Feliz cumpleaños, amigo!|Happy birthday, my friend!
+el fin de semana|the weekend|n|¿Qué haces el fin de semana?|What are you doing this weekend?
+la verdad|the truth|n|La verdad es que no lo sé.|The truth is I don't know.
+
+[x]
+hola|hello / hi|phr|Hola, ¿qué tal?|Hi, how's it going?
+gracias|thank you|phr|Muchas gracias por todo.|Thank you so much for everything.
+por favor|please|phr|Un momento, por favor.|One moment, please.
+de nada|you're welcome|phr|De nada, fue un placer.|You're welcome, it was a pleasure.
+perdón|excuse me / sorry|phr|Perdón, ¿sabe dónde está la estación?|Excuse me, do you know where the station is?
+lo siento|I'm sorry|phr|Lo siento mucho, fue sin querer.|I'm so sorry, it was an accident.
+adiós|goodbye|phr|Adiós, nos vemos mañana.|Bye, see you tomorrow.
+hasta luego|see you later|phr|Hasta luego, que te vaya bien.|See you later, take care.
+buenos días|good morning|phr|Buenos días, ¿cómo está usted?|Good morning, how are you?
+sí|yes|phr|Sí, claro que sí.|Yes, of course.
+claro|of course / sure|phr|Claro, no hay problema.|Sure, no problem.
+vale|okay (Spain)|phr|Vale, nos vemos a las ocho.|Okay, see you at eight.
+de acuerdo|agreed / okay|phr|Estoy de acuerdo contigo.|I agree with you.
+mucho gusto|nice to meet you|phr|Mucho gusto, soy Pablo.|Nice to meet you, I'm Pablo.
+me llamo|my name is|phr|Me llamo Ana, ¿y tú?|My name is Ana, and you?
+hay|there is / there are|phr|Hay mucha gente en la calle.|There are a lot of people on the street.
+tener que|to have to|phr|Tengo que irme ya.|I have to go now.
+tener hambre|to be hungry|phr|Tengo mucha hambre.|I'm really hungry.
+tener sed|to be thirsty|phr|¿Tienes sed? Hay agua en la nevera.|Are you thirsty? There's water in the fridge.
+tener frío|to be cold (a person)|phr|Tengo frío, ¿cerramos la ventana?|I'm cold, shall we close the window?
+hace calor|it's hot (weather)|phr|En agosto hace mucho calor aquí.|It's really hot here in August.
+me encanta|I love (it)|phr|Me encanta esta ciudad.|I love this city.
+no importa|it doesn't matter|phr|No importa, otro día será.|It doesn't matter, another day.
+a veces|sometimes|phr|A veces voy al trabajo en bici.|Sometimes I bike to work.
+otra vez|again|phr|¿Puedes repetirlo otra vez?|Can you say it again?
+ir de compras|to go shopping|phr|El sábado vamos de compras.|On Saturday we're going shopping.
+qué|what|q|¿Qué quieres comer?|What do you want to eat?
+quién|who|q|¿Quién es esa chica?|Who is that girl?
+dónde|where|q|¿Dónde vives?|Where do you live?
+cuándo|when (question)|q|¿Cuándo es la fiesta?|When is the party?
+cómo|how|q|¿Cómo estás?|How are you?
+por qué|why|q|¿Por qué no vienes con nosotros?|Why don't you come with us?
+cuánto|how much|q|¿Cuánto cuesta esto?|How much does this cost?
+cuál|which / what|q|¿Cuál es tu color favorito?|What's your favorite color?
+bueno|good|adj|La comida está muy buena.|The food is really good.
+malo|bad|adj|Esa película es muy mala.|That movie is really bad.
+grande|big|adj|Tienen una casa muy grande.|They have a very big house.
+pequeño|small|adj|El pueblo es pequeño, pero bonito.|The town is small, but pretty.
+nuevo|new|adj|¿Es nuevo tu coche?|Is your car new?
+viejo|old|adj|Este edificio es muy viejo.|This building is very old.
+joven|young|adj|Mi profesora es muy joven.|My teacher is very young.
+bonito|pretty / nice|adj|¡Qué día tan bonito!|What a nice day!
+feo|ugly|adj|El tiempo está feo hoy.|The weather is ugly today.
+largo|long|adj|Fue un día muy largo.|It was a very long day.
+corto|short (length)|adj|El viaje es muy corto.|The trip is very short.
+alto|tall / high|adj|Mi hermano es más alto que yo.|My brother is taller than me.
+bajo|short (height) / low|adj|Habla en voz baja, el bebé duerme.|Speak quietly, the baby is sleeping.
+fácil|easy|adj|No es fácil aprender un idioma.|It's not easy to learn a language.
+difícil|difficult / hard|adj|Esta pregunta es difícil.|This question is difficult.
+caro|expensive|adj|Este restaurante es muy caro.|This restaurant is very expensive.
+barato|cheap|adj|La fruta es barata en el mercado.|Fruit is cheap at the market.
+caliente|hot (to the touch)|adj|Cuidado, la sopa está caliente.|Careful, the soup is hot.
+frío|cold|adj|El agua está muy fría.|The water is very cold.
+cansado|tired|adj|Estoy muy cansado hoy.|I'm very tired today.
+contento|happy / glad|adj|Estoy contento con el resultado.|I'm happy with the result.
+feliz|happy|adj|¡Feliz Navidad a todos!|Merry Christmas, everyone!
+triste|sad|adj|¿Por qué estás triste?|Why are you sad?
+ocupado|busy|adj|Lo siento, estoy ocupado ahora.|Sorry, I'm busy right now.
+listo|ready / smart|adj|¿Estás listo? Nos vamos.|Are you ready? We're leaving.
+abierto|open|adj|¿Está abierta la farmacia?|Is the pharmacy open?
+cerrado|closed|adj|El banco está cerrado los domingos.|The bank is closed on Sundays.
+rico|delicious / rich|adj|¡Qué rico está este pastel!|This cake is delicious!
+lleno|full|adj|El restaurante está lleno.|The restaurant is full.
+importante|important|adj|Es importante llegar a tiempo.|It's important to arrive on time.
+mismo|same|adj|Vivimos en el mismo edificio.|We live in the same building.
+otro|other / another|adj|¿Quieres otro café?|Do you want another coffee?
+primero|first|adj|Es mi primer viaje a Perú.|It's my first trip to Peru.
+último|last|adj|Es el último autobús de la noche.|It's the last bus of the night.
+mejor|better / best|adj|Es el mejor café de la ciudad.|It's the best coffee in the city.
+peor|worse / worst|adj|Hoy es peor que ayer.|Today is worse than yesterday.
+rojo|red|adj|Me gusta tu camisa roja.|I like your red shirt.
+azul|blue|adj|El cielo está muy azul hoy.|The sky is very blue today.
+verde|green|adj|Hay muchos árboles verdes.|There are lots of green trees.
+blanco|white|adj|Quiero una camiseta blanca.|I want a white T-shirt.
+negro|black|adj|Tengo un gato negro.|I have a black cat.
+muy|very|adv|Hablas muy bien.|You speak very well.
+mucho|a lot / much|adv|Te quiero mucho.|I love you a lot.
+poco|a little / not much|adv|Hablo un poco de español.|I speak a little Spanish.
+más|more|adv|¿Puedes hablar más despacio?|Can you speak more slowly?
+menos|less|adv|Hoy hace menos frío.|It's less cold today.
+también|also / too|adv|Yo también quiero ir.|I want to go too.
+tampoco|neither / not either|adv|Yo tampoco lo sé.|I don't know either.
+siempre|always|adv|Siempre llega tarde.|He always arrives late.
+nunca|never|adv|Nunca he estado en Cuba.|I've never been to Cuba.
+ya|already|adv|Ya lo sé.|I already know.
+todavía|still / yet|adv|Todavía no ha llegado.|He still hasn't arrived.
+aquí|here|adv|Ven aquí un momento.|Come here for a moment.
+allí|there|adv|El banco está allí, a la derecha.|The bank is there, on the right.
+bien|well / fine|adv|Estoy bien, gracias.|I'm fine, thanks.
+mal|badly|adv|Dormí muy mal anoche.|I slept really badly last night.
+despacio|slowly|adv|Más despacio, por favor.|More slowly, please.
+rápido|fast / quickly|adv|Hablan demasiado rápido.|They talk too fast.
+pronto|soon|adv|¡Hasta pronto!|See you soon!
+tarde|late|adv|Ya es tarde, me voy.|It's already late, I'm leaving.
+temprano|early|adv|Mañana me levanto temprano.|Tomorrow I'm getting up early.
+cerca|near / close|adv|¿Hay un banco cerca de aquí?|Is there a bank near here?
+lejos|far|adv|El aeropuerto está muy lejos.|The airport is very far.
+juntos|together|adv|Vamos juntos al concierto.|We're going to the concert together.
+solo|only / just|adv|Solo quiero un café.|I just want a coffee.
+quizás|maybe|adv|Quizás vamos mañana.|Maybe we'll go tomorrow.
+demasiado|too (much)|adv|Este café está demasiado caliente.|This coffee is too hot.
+casi|almost|adv|Ya casi es la hora.|It's almost time.
+después|after / afterward|adv|Después de comer, damos un paseo.|After eating, we take a walk.
+antes|before|adv|Antes de salir, cierra la ventana.|Before leaving, close the window.
+con|with|prep|Voy con mi hermana.|I'm going with my sister.
+sin|without|prep|Un café sin azúcar, por favor.|A coffee without sugar, please.
+para|for / in order to|prep|Este regalo es para ti.|This gift is for you.
+hasta|until|prep|Trabajo hasta las cinco.|I work until five.
+desde|since / from|prep|Vivo aquí desde hace dos años.|I've lived here for two years.
+sobre|on / about|prep|Es un libro sobre la historia de México.|It's a book about the history of Mexico.
+entre|between|prep|La farmacia está entre el banco y el café.|The pharmacy is between the bank and the café.
+debajo de|under|prep|El gato está debajo de la cama.|The cat is under the bed.
+al lado de|next to|prep|Hay un café al lado del hotel.|There's a café next to the hotel.
+porque|because|conj|No voy porque estoy enfermo.|I'm not going because I'm sick.
+pero|but|conj|Quiero ir, pero no puedo.|I want to go, but I can't.
+si|if|conj|Si quieres, te acompaño.|If you want, I'll go with you.
+cuando|when (not a question)|conj|Llámame cuando llegues.|Call me when you arrive.
+algo|something|pron|¿Quieres algo de comer?|Do you want something to eat?
+nada|nothing|pron|No pasa nada.|It's no big deal.
+alguien|someone / anyone|pron|¿Alguien habla inglés aquí?|Does anyone speak English here?
+nadie|nobody|pron|No hay nadie en casa.|There's nobody home.
+todo|everything / all|pron|Todo está bien.|Everything is fine.
+cada|each / every|adj|Voy al gimnasio cada día.|I go to the gym every day.
+uno|one|num|Solo tengo un hermano.|I only have one brother.
+dos|two|num|Dos cafés, por favor.|Two coffees, please.
+tres|three|num|Tenemos tres gatos.|We have three cats.
+cuatro|four|num|La reunión es a las cuatro.|The meeting is at four.
+cinco|five|num|Espera cinco minutos.|Wait five minutes.
+seis|six|num|Somos seis personas.|There are six of us.
+siete|seven|num|La semana tiene siete días.|The week has seven days.
+ocho|eight|num|Salgo de casa a las ocho.|I leave home at eight.
+nueve|nine|num|Mi hijo tiene nueve años.|My son is nine years old.
+diez|ten|num|Cuesta diez euros.|It costs ten euros.
+veinte|twenty|num|Tengo veinte minutos libres.|I have twenty minutes free.
+cien|one hundred|num|Hay más de cien personas.|There are more than a hundred people.

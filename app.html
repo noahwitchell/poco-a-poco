@@ -1,0 +1,599 @@
+<title>Poco a Poco</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: one narrow phone column (max 560px); views swap in place like an app. The azulejo tile band is the one bold element, on the home screen only. */
+:root{
+  --paper:#eef1f8; --card:#ffffff; --ink:#141d45; --muted:#58628a; --line:#d5dbee;
+  --cobalt:#2745c4; --on-cobalt:#ffffff; --saffron:#e3961a; --saff-soft:#fbe8c4;
+  --good:#1b7f51; --good-soft:#d9efe3; --bad:#bb3a2a; --bad-soft:#f7dcd6; --warn:#8f6206; --warn-soft:#f5eacb;
+  --f-display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0c1124; --card:#151c37; --ink:#e6eaf8; --muted:#9aa3c8; --line:#283157;
+  --cobalt:#7d95ff; --on-cobalt:#0c1124; --saffron:#f2b443; --saff-soft:#3b3018;
+  --good:#52c48e; --good-soft:#12321f; --bad:#f2806e; --bad-soft:#3a1d19; --warn:#e5b850; --warn-soft:#342a12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0c1124; --card:#151c37; --ink:#e6eaf8; --muted:#9aa3c8; --line:#283157;
+  --cobalt:#7d95ff; --on-cobalt:#0c1124; --saffron:#f2b443; --saff-soft:#3b3018;
+  --good:#52c48e; --good-soft:#12321f; --bad:#f2806e; --bad-soft:#3a1d19; --warn:#e5b850; --warn-soft:#342a12; color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font:17px/1.45 var(--f-body);-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+#app{max-width:560px;margin:0 auto;box-sizing:border-box;min-height:100%;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 40px;
+  display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+
+.bar{display:flex;align-items:center;gap:10px;min-height:48px}
+.bar h2{flex:1;font-size:20px;font-weight:600;min-width:0}
+.iconbtn{flex:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;padding:0}
+.iconbtn svg{width:22px;height:22px}
+.chips{display:flex;gap:6px;font-variant-numeric:tabular-nums}
+.chip{font-size:13px;font-weight:700;padding:4px 9px;border-radius:999px;background:var(--card);border:1px solid var(--line);white-space:nowrap}
+.chip.new{color:var(--cobalt)} .chip.lrn{color:var(--bad)} .chip.rev{color:var(--good)}
+
+.btn{font-weight:700;font-size:17px;border:0;border-radius:14px;padding:13px 18px;min-height:52px;background:var(--cobalt);color:var(--on-cobalt);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.line{background:transparent;color:var(--cobalt);border:1.5px solid var(--line)}
+.btn.plain{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.small{min-height:40px;padding:8px 14px;font-size:15px;border-radius:11px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn svg{width:20px;height:20px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>.grow{flex:1 1 140px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.label{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+
+/* home */
+.tiles{height:64px;border-radius:16px;background-color:var(--cobalt);
+  background-image:
+   radial-gradient(circle at 50% 50%,var(--saffron) 0 3.5px,transparent 4.5px),
+   radial-gradient(circle at 50% 50%,transparent 0 8px,var(--on-cobalt) 8.5px 9.5px,transparent 10px),
+   radial-gradient(circle at 0 0,var(--paper) 0 7px,transparent 7.5px),
+   radial-gradient(circle at 100% 0,var(--paper) 0 7px,transparent 7.5px),
+   radial-gradient(circle at 0 100%,var(--paper) 0 7px,transparent 7.5px),
+   radial-gradient(circle at 100% 100%,var(--paper) 0 7px,transparent 7.5px);
+  background-size:32px 32px;background-position:center}
+.brand{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.brand h1{font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.brand h1 .tilde{color:var(--saffron)}
+.tag{color:var(--muted);margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.stat b{display:block;font:800 26px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.act h3{font-size:24px;font-weight:600}
+.act .meta{display:flex;gap:8px;flex-wrap:wrap}
+.warnbox{background:var(--warn-soft);color:var(--warn);border-radius:14px;padding:12px 14px;font-size:15px}
+
+/* flashcards */
+.prompt{align-items:flex-start}
+.prompt .en{font:600 32px/1.15 var(--f-display)}
+.prompt .ctx{color:var(--muted);font-style:italic}
+.cloze{font-size:18px}
+.ansbox{display:flex;flex-direction:column;gap:10px}
+#ans{font:400 24px var(--f-body);width:100%;box-sizing:border-box;padding:13px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+#ans:focus{border-color:var(--cobalt);outline:none}
+.accents{display:flex;gap:6px;flex-wrap:wrap}
+.accents button{width:42px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:19px;cursor:pointer}
+.links{display:flex;gap:18px;flex-wrap:wrap}
+.links button{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:700;cursor:pointer}
+.res{border-radius:14px;padding:12px 14px;font-weight:700}
+.res .note{font-weight:400;display:block;margin-top:2px}
+.res.right{background:var(--good-soft);color:var(--good)}
+.res.almost{background:var(--warn-soft);color:var(--warn)}
+.res.wrong{background:var(--bad-soft);color:var(--bad)}
+.res .you{font-weight:400;text-decoration:line-through}
+.answer{display:flex;align-items:center;gap:12px}
+.answer .es{font:800 34px/1.1 var(--f-display);flex:1;min-width:0;overflow-wrap:anywhere}
+.answer .alts{display:block;font:400 16px var(--f-body);color:var(--muted);margin-top:4px}
+.say{display:flex;gap:10px;align-items:flex-start}
+.say p{flex:1;min-width:0}
+.say .es-s{font-size:19px}
+.rates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.rate{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:10px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:60px;justify-content:center}
+.rate b{font-size:16px}
+.rate span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rate.r1 b{color:var(--bad)} .rate.r2 b{color:var(--warn)} .rate.r3 b{color:var(--good)} .rate.r4 b{color:var(--cobalt)}
+.rate.def{border-color:var(--saffron);box-shadow:0 0 0 2px var(--saffron) inset}
+
+/* listening */
+.speeds{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+.speeds button{border:0;background:none;padding:9px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0}
+.speeds button+button{border-left:1px solid var(--line)}
+.speeds button b{font-size:15px}
+.speeds button span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.speeds button.on{background:var(--cobalt);color:var(--on-cobalt)}
+.speeds button.on span{color:var(--on-cobalt);opacity:.8}
+.player{display:flex;align-items:center;justify-content:center;gap:14px;padding:6px 0}
+.playbig{width:92px;height:92px;border-radius:50%;border:0;background:var(--cobalt);color:var(--on-cobalt);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 0 -2px var(--saffron)}
+.playbig svg{width:40px;height:40px;margin-left:5px}
+.playbig.speaking{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(.95)}}
+@media (prefers-reduced-motion: reduce){.playbig.speaking{animation:none}}
+.side{display:flex;flex-direction:column;gap:8px;align-items:center}
+.side .btn{width:96px;padding:8px;font-size:14px;min-height:44px}
+.words{display:flex;flex-wrap:wrap;align-items:flex-end;row-gap:12px;font-size:21px;line-height:1.2;padding:4px 0}
+.w{border:0;background:none;padding:4px 3px 3px;border-radius:8px;cursor:pointer;border-bottom:2.5px solid var(--line);font-size:inherit;min-height:34px;transition:background .15s}
+.w.blank{color:transparent;user-select:none}
+.w.on{background:var(--saff-soft)}
+.w.ok{color:var(--good);border-bottom-color:var(--good)}
+.w.miss{color:var(--bad);border-bottom-color:var(--bad);border-bottom-style:dashed}
+.lk{width:13px;height:9px;margin:0 -2px 6px;flex:none;align-self:flex-end;border:2.5px solid transparent;border-top:0;border-radius:0 0 10px 10px}
+.lk.l2{border-color:var(--saffron)}
+.lk.l1{border-color:var(--muted);border-style:dotted;border-top:0}
+.gap{width:10px;flex:none}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--muted);align-items:center}
+.legend i{display:inline-block;width:14px;height:8px;border:2.5px solid var(--saffron);border-top:0;border-radius:0 0 10px 10px;margin-right:5px;vertical-align:middle}
+.legend i.l1{border-color:var(--muted);border-style:dotted;border-top:0}
+.explain{font-size:15px;color:var(--muted);background:var(--paper);border-radius:12px;padding:10px 12px}
+.trans{font-style:italic;color:var(--muted)}
+#dict{font:400 20px var(--f-body);width:100%;box-sizing:border-box;padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);resize:none}
+#dict:focus{border-color:var(--cobalt);outline:none}
+.score{font-weight:700}
+.added{font-size:15px;background:var(--saff-soft);border-radius:12px;padding:10px 12px}
+.lrates{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+
+/* settings */
+.field{display:flex;flex-direction:column;gap:6px}
+.field select{font:inherit;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.seg button{border:0;background:var(--card);padding:11px;cursor:pointer;font-weight:700}
+.seg button.on{background:var(--cobalt);color:var(--on-cobalt)}
+#backup{font:13px/1.4 ui-monospace,Menlo,monospace;width:100%;box-sizing:border-box;min-height:90px;border-radius:12px;border:1px solid var(--line);padding:10px;background:var(--paper);color:var(--ink)}
+.danger{color:var(--bad)}
+.btn.dangerbtn{background:var(--bad);color:var(--card)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:12px;font-size:15px;z-index:20;max-width:calc(100% - 48px)}
+.done{align-items:center;text-align:center;padding-block:28px}
+.done h2{font-size:30px}
+</style>
+<div id="app"></div>
+
+<script>
+(()=>{
+'use strict';
+// ---------- data ----------
+const DECK=[["ser","to be (permanent)","v","Mi hermana es muy alta.","My sister is very tall."],["el día","the day","n","Que tengas un buen día.","Have a good day."],["hola","hello / hi","phr","Hola, ¿qué tal?","Hi, how's it going?"],["estar","to be (state, location)","v","¿Dónde está el baño?","Where is the bathroom?"],["la noche","the night","n","Buenas noches, hasta mañana.","Good night, see you tomorrow."],["gracias","thank you","phr","Muchas gracias por todo.","Thank you so much for everything."],["tener","to have","v","Tengo dos hermanos.","I have two brothers."],["la mañana","the morning","n","Trabajo por la mañana.","I work in the morning."],["por favor","please","phr","Un momento, por favor.","One moment, please."],["hacer","to do / to make","v","¿Qué vas a hacer esta noche?","What are you going to do tonight?"],["la tarde","the afternoon / evening","n","Nos vemos esta tarde.","See you this afternoon."],["de nada","you're welcome","phr","De nada, fue un placer.","You're welcome, it was a pleasure."],["ir","to go","v","Vamos a ir al cine mañana.","We're going to go to the movies tomorrow."],["hoy","today","adv","Hoy hace mucho calor.","It's very hot today."],["perdón","excuse me / sorry","phr","Perdón, ¿sabe dónde está la estación?","Excuse me, do you know where the station is?"],["poder","to be able to / can","v","¿Puedes ayudarme un momento?","Can you help me for a moment?"],["mañana","tomorrow","adv","Mañana es mi cumpleaños.","Tomorrow is my birthday."],["lo siento","I'm sorry","phr","Lo siento mucho, fue sin querer.","I'm so sorry, it was an accident."],["decir","to say / to tell","v","¿Qué dijo el médico?","What did the doctor say?"],["ayer","yesterday","adv","Ayer fuimos a la playa.","Yesterday we went to the beach."],["adiós","goodbye","phr","Adiós, nos vemos mañana.","Bye, see you tomorrow."],["querer","to want / to love","v","Quiero aprender español este año.","I want to learn Spanish this year."],["ahora","now","adv","Ahora no puedo, estoy ocupado.","I can't right now, I'm busy."],["hasta luego","see you later","phr","Hasta luego, que te vaya bien.","See you later, take care."],["saber","to know (facts)","v","No sé dónde está la estación.","I don't know where the station is."],["la semana","the week","n","La semana que viene tengo vacaciones.","Next week I'm on vacation."],["buenos días","good morning","phr","Buenos días, ¿cómo está usted?","Good morning, how are you?"],["ver","to see","v","¿Viste la película anoche?","Did you see the movie last night?"],["el mes","the month","n","Voy a España el mes que viene.","I'm going to Spain next month."],["sí","yes","phr","Sí, claro que sí.","Yes, of course."],["dar","to give","v","Me dio un regalo para mi cumpleaños.","He gave me a gift for my birthday."],["el año","the year","n","Este año quiero viajar más.","This year I want to travel more."],["claro","of course / sure","phr","Claro, no hay problema.","Sure, no problem."],["venir","to come","v","¿A qué hora vienes a casa?","What time are you coming home?"],["la hora","the hour / the time (of day)","n","¿Qué hora es?","What time is it?"],["vale","okay (Spain)","phr","Vale, nos vemos a las ocho.","Okay, see you at eight."],["conocer","to know (people, places)","v","¿Conoces a mi amigo Carlos?","Do you know my friend Carlos?"],["el tiempo","the time / the weather","n","No tengo tiempo para eso.","I don't have time for that."],["de acuerdo","agreed / okay","phr","Estoy de acuerdo contigo.","I agree with you."],["hablar","to speak / to talk","v","Ella habla español e inglés.","She speaks Spanish and English."],["la vez","the time (occasion)","n","Es la primera vez que vengo aquí.","It's the first time I've come here."],["mucho gusto","nice to meet you","phr","Mucho gusto, soy Pablo.","Nice to meet you, I'm Pablo."],["llegar","to arrive","v","El tren llega a las ocho.","The train arrives at eight."],["la casa","the house / home","n","Estoy en casa todo el día.","I'm at home all day."],["me llamo","my name is","phr","Me llamo Ana, ¿y tú?","My name is Ana, and you?"],["pasar","to happen / to pass","v","¿Qué te pasa? Estás muy callado.","What's wrong? You're very quiet."],["la puerta","the door","n","Alguien está en la puerta.","Someone is at the door."],["hay","there is / there are","phr","Hay mucha gente en la calle.","There are a lot of people on the street."],["deber","should / must","v","Debes descansar un poco más.","You should rest a little more."],["la ventana","the window","n","Abre la ventana, por favor.","Open the window, please."],["tener que","to have to","phr","Tengo que irme ya.","I have to go now."],["poner","to put","v","Pon las llaves en la mesa.","Put the keys on the table."],["la mesa","the table","n","La comida está en la mesa.","The food is on the table."],["tener hambre","to be hungry","phr","Tengo mucha hambre.","I'm really hungry."],["parecer","to seem","v","Me parece una buena idea.","It seems like a good idea to me."],["la silla","the chair","n","Esta silla no es muy cómoda.","This chair isn't very comfortable."],["tener sed","to be thirsty","phr","¿Tienes sed? Hay agua en la nevera.","Are you thirsty? There's water in the fridge."],["quedar","to stay / to meet up","v","¿Quedamos a las seis en la plaza?","Shall we meet at six in the square?"],["la cama","the bed","n","Me voy a la cama, estoy cansado.","I'm going to bed, I'm tired."],["tener frío","to be cold (a person)","phr","Tengo frío, ¿cerramos la ventana?","I'm cold, shall we close the window?"],["creer","to believe / to think","v","Creo que va a llover hoy.","I think it's going to rain today."],["la cocina","the kitchen","n","Todos están en la cocina.","Everyone is in the kitchen."],["hace calor","it's hot (weather)","phr","En agosto hace mucho calor aquí.","It's really hot here in August."],["llevar","to carry / to wear / to take","v","Siempre llevo un libro en la mochila.","I always carry a book in my backpack."],["el baño","the bathroom","n","Perdón, ¿dónde está el baño?","Excuse me, where is the bathroom?"],["me encanta","I love (it)","phr","Me encanta esta ciudad.","I love this city."],["dejar","to leave (something) / to let","v","Deja el abrigo aquí, si quieres.","Leave your coat here, if you want."],["la habitación","the room / the bedroom","n","Mi habitación es pequeña pero bonita.","My room is small but pretty."],["no importa","it doesn't matter","phr","No importa, otro día será.","It doesn't matter, another day."],["seguir","to follow / to keep going","v","Sigue todo recto y luego a la izquierda.","Keep going straight and then left."],["la llave","the key","n","¿Tienes la llave del coche?","Do you have the car key?"],["a veces","sometimes","phr","A veces voy al trabajo en bici.","Sometimes I bike to work."],["encontrar","to find","v","No encuentro mis gafas.","I can't find my glasses."],["el teléfono","the phone","n","Se me olvidó el teléfono en casa.","I left my phone at home."],["otra vez","again","phr","¿Puedes repetirlo otra vez?","Can you say it again?"],["llamar","to call","v","Te llamo cuando llegue.","I'll call you when I arrive."],["el libro","the book","n","Estoy leyendo un libro muy bueno.","I'm reading a really good book."],["ir de compras","to go shopping","phr","El sábado vamos de compras.","On Saturday we're going shopping."],["pensar","to think","v","Estoy pensando en ir a México.","I'm thinking about going to Mexico."],["el agua","the water","n","Un vaso de agua, por favor.","A glass of water, please."],["qué","what","q","¿Qué quieres comer?","What do you want to eat?"],["salir","to leave / to go out","v","Salimos de casa a las siete.","We leave the house at seven."],["el café","the coffee","n","Tomo un café con leche cada mañana.","I have a coffee with milk every morning."],["quién","who","q","¿Quién es esa chica?","Who is that girl?"],["volver","to return / to come back","v","Vuelvo en cinco minutos.","I'll be back in five minutes."],["la leche","the milk","n","No queda leche en la nevera.","There's no milk left in the fridge."],["dónde","where","q","¿Dónde vives?","Where do you live?"],["tomar","to take / to drink","v","¿Quieres tomar un café conmigo?","Do you want to have a coffee with me?"],["el pan","the bread","n","El pan de esta panadería es buenísimo.","The bread at this bakery is great."],["cuándo","when (question)","q","¿Cuándo es la fiesta?","When is the party?"],["entender","to understand","v","No entiendo lo que dice.","I don't understand what he's saying."],["la comida","the food / the meal","n","Me encanta la comida mexicana.","I love Mexican food."],["cómo","how","q","¿Cómo estás?","How are you?"],["trabajar","to work","v","Trabajo en una oficina en el centro.","I work in an office downtown."],["la carne","the meat","n","No como carne roja.","I don't eat red meat."],["por qué","why","q","¿Por qué no vienes con nosotros?","Why don't you come with us?"],["vivir","to live","v","Vivimos en un apartamento pequeño.","We live in a small apartment."],["el pollo","the chicken","n","Quiero arroz con pollo.","I want rice with chicken."],["cuánto","how much","q","¿Cuánto cuesta esto?","How much does this cost?"],["comer","to eat","v","¿A qué hora comemos hoy?","What time are we eating today?"],["el pescado","the fish (food)","n","El pescado está muy fresco hoy.","The fish is very fresh today."],["cuál","which / what","q","¿Cuál es tu color favorito?","What's your favorite color?"],["beber","to drink","v","Hay que beber más agua.","You have to drink more water."],["el arroz","the rice","n","El arroz necesita veinte minutos.","The rice needs twenty minutes."],["bueno","good","adj","La comida está muy buena.","The food is really good."],["escribir","to write","v","Le escribo un mensaje a mi madre.","I'm writing a message to my mother."],["la fruta","the fruit","n","Como fruta todos los días.","I eat fruit every day."],["malo","bad","adj","Esa película es muy mala.","That movie is really bad."],["leer","to read","v","Me gusta leer antes de dormir.","I like to read before going to sleep."],["el huevo","the egg","n","Desayuno dos huevos fritos.","I have two fried eggs for breakfast."],["grande","big","adj","Tienen una casa muy grande.","They have a very big house."],["escuchar","to listen","v","Escucha bien, es muy importante.","Listen carefully, it's very important."],["la cerveza","the beer","n","Dos cervezas bien frías, por favor.","Two really cold beers, please."],["pequeño","small","adj","El pueblo es pequeño, pero bonito.","The town is small, but pretty."],["esperar","to wait / to hope","v","Espérame aquí, ya vuelvo.","Wait for me here, I'll be right back."],["el vino","the wine","n","¿Prefieres vino tinto o blanco?","Do you prefer red or white wine?"],["nuevo","new","adj","¿Es nuevo tu coche?","Is your car new?"],["buscar","to look for","v","Estoy buscando una farmacia.","I'm looking for a pharmacy."],["la cuenta","the bill / the check","n","La cuenta, por favor.","The check, please."],["viejo","old","adj","Este edificio es muy viejo.","This building is very old."],["necesitar","to need","v","Necesito un poco más de tiempo.","I need a little more time."],["el desayuno","the breakfast","n","El desayuno está listo.","Breakfast is ready."],["joven","young","adj","Mi profesora es muy joven.","My teacher is very young."],["gustar","to like (to please)","v","Me gusta mucho esta canción.","I really like this song."],["la cena","the dinner","n","¿Qué hay para la cena?","What's for dinner?"],["bonito","pretty / nice","adj","¡Qué día tan bonito!","What a nice day!"],["empezar","to begin / to start","v","La clase empieza a las nueve.","The class starts at nine."],["la persona","the person","n","Es una persona muy amable.","She's a very kind person."],["feo","ugly","adj","El tiempo está feo hoy.","The weather is ugly today."],["terminar","to finish","v","¿Ya terminaste la tarea?","Did you already finish the homework?"],["el hombre","the man","n","Ese hombre es mi vecino.","That man is my neighbor."],["largo","long","adj","Fue un día muy largo.","It was a very long day."],["comprar","to buy","v","Voy a comprar pan y leche.","I'm going to buy bread and milk."],["la mujer","the woman / the wife","n","La mujer de Juan es médica.","Juan's wife is a doctor."],["corto","short (length)","adj","El viaje es muy corto.","The trip is very short."],["pagar","to pay","v","¿Puedo pagar con tarjeta?","Can I pay by card?"],["el niño","the boy / the child","n","El niño tiene cinco años.","The boy is five years old."],["alto","tall / high","adj","Mi hermano es más alto que yo.","My brother is taller than me."],["abrir","to open","v","¿A qué hora abre el museo?","What time does the museum open?"],["la niña","the girl","n","La niña está jugando afuera.","The girl is playing outside."],["bajo","short (height) / low","adj","Habla en voz baja, el bebé duerme.","Speak quietly, the baby is sleeping."],["cerrar","to close","v","Cierra la puerta, hace frío.","Close the door, it's cold."],["el amigo","the friend (male)","n","Voy a cenar con un amigo.","I'm having dinner with a friend."],["fácil","easy","adj","No es fácil aprender un idioma.","It's not easy to learn a language."],["dormir","to sleep","v","Anoche no dormí bien.","I didn't sleep well last night."],["la amiga","the friend (female)","n","Mi amiga vive en Madrid.","My friend lives in Madrid."],["difícil","difficult / hard","adj","Esta pregunta es difícil.","This question is difficult."],["sentir","to feel / to be sorry","v","Lo siento, llegué tarde.","I'm sorry, I arrived late."],["la familia","the family","n","Toda mi familia vive cerca.","My whole family lives nearby."],["caro","expensive","adj","Este restaurante es muy caro.","This restaurant is very expensive."],["jugar","to play (a game, a sport)","v","Los niños juegan en el parque.","The kids play in the park."],["la madre","the mother","n","Mi madre es de Colombia.","My mother is from Colombia."],["barato","cheap","adj","La fruta es barata en el mercado.","Fruit is cheap at the market."],["usar","to use","v","¿Puedo usar tu teléfono?","Can I use your phone?"],["el padre","the father","n","Mi padre trabaja en un hospital.","My father works at a hospital."],["caliente","hot (to the touch)","adj","Cuidado, la sopa está caliente.","Careful, the soup is hot."],["ayudar","to help","v","¿Me ayudas con estas bolsas?","Will you help me with these bags?"],["el hermano","the brother","n","Mi hermano es mayor que yo.","My brother is older than me."],["frío","cold","adj","El agua está muy fría.","The water is very cold."],["aprender","to learn","v","Aprendo algo nuevo cada día.","I learn something new every day."],["la hermana","the sister","n","Mi hermana tiene dos hijos.","My sister has two kids."],["cansado","tired","adj","Estoy muy cansado hoy.","I'm very tired today."],["preguntar","to ask","v","Voy a preguntar al camarero.","I'm going to ask the waiter."],["el hijo","the son","n","Su hijo estudia en la universidad.","Her son studies at the university."],["contento","happy / glad","adj","Estoy contento con el resultado.","I'm happy with the result."],["contestar","to answer","v","No contesta el teléfono.","He's not answering the phone."],["la hija","the daughter","n","Nuestra hija se llama Lucía.","Our daughter's name is Lucía."],["feliz","happy","adj","¡Feliz Navidad a todos!","Merry Christmas, everyone!"],["caminar","to walk","v","Me gusta caminar por la playa.","I like to walk along the beach."],["el perro","the dog","n","El perro quiere salir a pasear.","The dog wants to go out for a walk."],["triste","sad","adj","¿Por qué estás triste?","Why are you sad?"],["correr","to run","v","Corro tres veces a la semana.","I run three times a week."],["el gato","the cat","n","El gato duerme en el sofá.","The cat sleeps on the sofa."],["ocupado","busy","adj","Lo siento, estoy ocupado ahora.","Sorry, I'm busy right now."],["cocinar","to cook","v","Mi padre cocina muy bien.","My father cooks very well."],["la ciudad","the city","n","Es una ciudad muy bonita.","It's a very pretty city."],["listo","ready / smart","adj","¿Estás listo? Nos vamos.","Are you ready? We're leaving."],["viajar","to travel","v","Queremos viajar a España en verano.","We want to travel to Spain in the summer."],["la calle","the street","n","Vivo en esta calle.","I live on this street."],["abierto","open","adj","¿Está abierta la farmacia?","Is the pharmacy open?"],["recordar","to remember","v","No recuerdo su nombre.","I don't remember his name."],["el centro","the center / downtown","n","¿Cómo llego al centro?","How do I get downtown?"],["cerrado","closed","adj","El banco está cerrado los domingos.","The bank is closed on Sundays."],["olvidar","to forget","v","Olvidé mi paraguas en el autobús.","I forgot my umbrella on the bus."],["la tienda","the store","n","La tienda cierra a las nueve.","The store closes at nine."],["rico","delicious / rich","adj","¡Qué rico está este pastel!","This cake is delicious!"],["perder","to lose / to miss (a train)","v","Perdimos el último tren.","We missed the last train."],["el mercado","the market","n","Compramos fruta en el mercado.","We buy fruit at the market."],["lleno","full","adj","El restaurante está lleno.","The restaurant is full."],["ganar","to win / to earn","v","Nuestro equipo ganó el partido.","Our team won the game."],["el restaurante","the restaurant","n","Conozco un restaurante muy bueno.","I know a really good restaurant."],["importante","important","adj","Es importante llegar a tiempo.","It's important to arrive on time."],["cambiar","to change","v","Quiero cambiar de trabajo.","I want to change jobs."],["el hotel","the hotel","n","El hotel está cerca de la playa.","The hotel is near the beach."],["mismo","same","adj","Vivimos en el mismo edificio.","We live in the same building."],["mirar","to look at / to watch","v","Mira, allí está el mar.","Look, there's the sea."],["la playa","the beach","n","Vamos a la playa el sábado.","We're going to the beach on Saturday."],["otro","other / another","adj","¿Quieres otro café?","Do you want another coffee?"],["traer","to bring","v","¿Puedes traer algo de beber?","Can you bring something to drink?"],["el parque","the park","n","Hay un parque al lado de mi casa.","There's a park next to my house."],["primero","first","adj","Es mi primer viaje a Perú.","It's my first trip to Peru."],["enviar/mandar","to send","v","Te envío las fotos esta tarde.","I'll send you the photos this afternoon."],["la estación","the station / the season","n","La estación está a diez minutos.","The station is ten minutes away."],["último","last","adj","Es el último autobús de la noche.","It's the last bus of the night."],["ducharse","to shower","v","Me ducho por la mañana.","I shower in the morning."],["el aeropuerto","the airport","n","Te llevo al aeropuerto mañana.","I'll take you to the airport tomorrow."],["mejor","better / best","adj","Es el mejor café de la ciudad.","It's the best coffee in the city."],["levantarse","to get up","v","Me levanto a las seis y media.","I get up at six thirty."],["el coche/el carro/el auto","the car","n","Mi coche es viejo, pero funciona.","My car is old, but it works."],["peor","worse / worst","adj","Hoy es peor que ayer.","Today is worse than yesterday."],["acostarse","to go to bed","v","Los niños se acuestan temprano.","The kids go to bed early."],["el autobús","the bus","n","El autobús pasa cada quince minutos.","The bus comes every fifteen minutes."],["rojo","red","adj","Me gusta tu camisa roja.","I like your red shirt."],["sentarse","to sit down","v","Siéntate aquí, a mi lado.","Sit here, next to me."],["el tren","the train","n","Prefiero ir en tren.","I prefer to go by train."],["azul","blue","adj","El cielo está muy azul hoy.","The sky is very blue today."],["limpiar","to clean","v","Hoy tenemos que limpiar la cocina.","Today we have to clean the kitchen."],["el dinero","the money","n","No tengo dinero en efectivo.","I don't have any cash."],["verde","green","adj","Hay muchos árboles verdes.","There are lots of green trees."],["conducir/manejar","to drive","v","No me gusta conducir de noche.","I don't like driving at night."],["el trabajo","the work / the job","n","Tengo mucho trabajo esta semana.","I have a lot of work this week."],["blanco","white","adj","Quiero una camiseta blanca.","I want a white T-shirt."],["bailar","to dance","v","¿Bailamos esta canción?","Shall we dance to this song?"],["la escuela","the school","n","Los niños van a la escuela a pie.","The kids walk to school."],["negro","black","adj","Tengo un gato negro.","I have a black cat."],["cantar","to sing","v","Mi abuela canta mientras cocina.","My grandmother sings while she cooks."],["el médico","the doctor","n","Tengo cita con el médico a las tres.","I have a doctor's appointment at three."],["muy","very","adv","Hablas muy bien.","You speak very well."],["descansar","to rest","v","El domingo voy a descansar.","On Sunday I'm going to rest."],["el problema","the problem","n","No hay ningún problema.","There's no problem at all."],["mucho","a lot / much","adv","Te quiero mucho.","I love you a lot."],["entrar","to enter / to go in","v","Puedes entrar, la puerta está abierta.","You can go in, the door is open."],["la pregunta","the question","n","¿Puedo hacer una pregunta?","Can I ask a question?"],["poco","a little / not much","adv","Hablo un poco de español.","I speak a little Spanish."],["subir","to go up / to get in (a car)","v","Sube al coche, te llevo.","Get in the car, I'll give you a ride."],["la idea","the idea","n","¡Qué buena idea!","What a good idea!"],["más","more","adv","¿Puedes hablar más despacio?","Can you speak more slowly?"],["bajar","to go down / to get off","v","Bajamos en la próxima parada.","We get off at the next stop."],["la vida","the life","n","Así es la vida.","That's life."],["menos","less","adv","Hoy hace menos frío.","It's less cold today."],["el mundo","the world","n","Quiero viajar por todo el mundo.","I want to travel all over the world."],["también","also / too","adv","Yo también quiero ir.","I want to go too."],["el país","the country","n","¿De qué país eres?","What country are you from?"],["tampoco","neither / not either","adv","Yo tampoco lo sé.","I don't know either."],["el nombre","the name","n","¿Cuál es tu nombre?","What's your name?"],["siempre","always","adv","Siempre llega tarde.","He always arrives late."],["la palabra","the word","n","No conozco esta palabra.","I don't know this word."],["nunca","never","adv","Nunca he estado en Cuba.","I've never been to Cuba."],["el idioma","the language","n","Hablo tres idiomas.","I speak three languages."],["ya","already","adv","Ya lo sé.","I already know."],["la música","the music","n","Pon un poco de música.","Put on some music."],["todavía","still / yet","adv","Todavía no ha llegado.","He still hasn't arrived."],["la película","the movie","n","La película empieza a las diez.","The movie starts at ten."],["aquí","here","adv","Ven aquí un momento.","Come here for a moment."],["el sol","the sun","n","Hoy hace sol.","It's sunny today."],["allí","there","adv","El banco está allí, a la derecha.","The bank is there, on the right."],["la lluvia","the rain","n","Me gusta el sonido de la lluvia.","I like the sound of the rain."],["bien","well / fine","adv","Estoy bien, gracias.","I'm fine, thanks."],["el mar","the sea","n","Desde aquí se ve el mar.","You can see the sea from here."],["mal","badly","adv","Dormí muy mal anoche.","I slept really badly last night."],["la ropa","the clothes","n","Tengo que lavar la ropa.","I have to wash the clothes."],["despacio","slowly","adv","Más despacio, por favor.","More slowly, please."],["los zapatos","the shoes","n","Estos zapatos son nuevos.","These shoes are new."],["rápido","fast / quickly","adv","Hablan demasiado rápido.","They talk too fast."],["la cabeza","the head","n","Me duele la cabeza.","My head hurts."],["pronto","soon","adv","¡Hasta pronto!","See you soon!"],["la mano","the hand","n","Lávate las manos antes de comer.","Wash your hands before eating."],["tarde","late","adv","Ya es tarde, me voy.","It's already late, I'm leaving."],["el cumpleaños","the birthday","n","¡Feliz cumpleaños, amigo!","Happy birthday, my friend!"],["temprano","early","adv","Mañana me levanto temprano.","Tomorrow I'm getting up early."],["el fin de semana","the weekend","n","¿Qué haces el fin de semana?","What are you doing this weekend?"],["cerca","near / close","adv","¿Hay un banco cerca de aquí?","Is there a bank near here?"],["la verdad","the truth","n","La verdad es que no lo sé.","The truth is I don't know."],["lejos","far","adv","El aeropuerto está muy lejos.","The airport is very far."],["juntos","together","adv","Vamos juntos al concierto.","We're going to the concert together."],["solo","only / just","adv","Solo quiero un café.","I just want a coffee."],["quizás","maybe","adv","Quizás vamos mañana.","Maybe we'll go tomorrow."],["demasiado","too (much)","adv","Este café está demasiado caliente.","This coffee is too hot."],["casi","almost","adv","Ya casi es la hora.","It's almost time."],["después","after / afterward","adv","Después de comer, damos un paseo.","After eating, we take a walk."],["antes","before","adv","Antes de salir, cierra la ventana.","Before leaving, close the window."],["con","with","prep","Voy con mi hermana.","I'm going with my sister."],["sin","without","prep","Un café sin azúcar, por favor.","A coffee without sugar, please."],["para","for / in order to","prep","Este regalo es para ti.","This gift is for you."],["hasta","until","prep","Trabajo hasta las cinco.","I work until five."],["desde","since / from","prep","Vivo aquí desde hace dos años.","I've lived here for two years."],["sobre","on / about","prep","Es un libro sobre la historia de México.","It's a book about the history of Mexico."],["entre","between","prep","La farmacia está entre el banco y el café.","The pharmacy is between the bank and the café."],["debajo de","under","prep","El gato está debajo de la cama.","The cat is under the bed."],["al lado de","next to","prep","Hay un café al lado del hotel.","There's a café next to the hotel."],["porque","because","conj","No voy porque estoy enfermo.","I'm not going because I'm sick."],["pero","but","conj","Quiero ir, pero no puedo.","I want to go, but I can't."],["si","if","conj","Si quieres, te acompaño.","If you want, I'll go with you."],["cuando","when (not a question)","conj","Llámame cuando llegues.","Call me when you arrive."],["algo","something","pron","¿Quieres algo de comer?","Do you want something to eat?"],["nada","nothing","pron","No pasa nada.","It's no big deal."],["alguien","someone / anyone","pron","¿Alguien habla inglés aquí?","Does anyone speak English here?"],["nadie","nobody","pron","No hay nadie en casa.","There's nobody home."],["todo","everything / all","pron","Todo está bien.","Everything is fine."],["cada","each / every","adj","Voy al gimnasio cada día.","I go to the gym every day."],["uno","one","num","Solo tengo un hermano.","I only have one brother."],["dos","two","num","Dos cafés, por favor.","Two coffees, please."],["tres","three","num","Tenemos tres gatos.","We have three cats."],["cuatro","four","num","La reunión es a las cuatro.","The meeting is at four."],["cinco","five","num","Espera cinco minutos.","Wait five minutes."],["seis","six","num","Somos seis personas.","There are six of us."],["siete","seven","num","La semana tiene siete días.","The week has seven days."],["ocho","eight","num","Salgo de casa a las ocho.","I leave home at eight."],["nueve","nine","num","Mi hijo tiene nueve años.","My son is nine years old."],["diez","ten","num","Cuesta diez euros.","It costs ten euros."],["veinte","twenty","num","Tengo veinte minutos libres.","I have twenty minutes free."],["cien","one hundred","num","Hay más de cien personas.","There are more than a hundred people."]];
+const TAGS={v:'verb',n:'noun',adj:'adjective',adv:'adverb',prep:'preposition',conj:'connector',pron:'pronoun',num:'number',phr:'phrase',q:'question word'};
+const CARDS=DECK.map((d,i)=>({id:d[0],alts:d[0].split('/'),es:d[0].split('/')[0],en:d[1],tag:d[2],ses:d[3],sen:d[4],i}));
+const BYID=Object.fromEntries(CARDS.map(c=>[c.id,c]));
+const MIN=6e4,HOUR=36e5,DAY=864e5,STEPS=[1*MIN,10*MIN];
+const LAD=[.6,.8,1],LNAME=['Slow','Steady','Natural'];
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// ---------- storage ----------
+const KEY='pocoapoco-v1';
+const blank=()=>({cards:{},sents:{},settings:{voice:'',newPerDay:10,mode:'type',autoplay:true},day:{date:'',newDone:0,reviews:0,listened:0,extra:0},streak:{last:'',n:0}});
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.cards){const b=blank();return {...b,...s,settings:{...b.settings,...s.settings},day:{...b.day,...s.day},streak:{...b.streak,...s.streak}}}}catch(e){}return blank()}
+let S=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function rollDay(){const t=ymd(new Date());if(S.day.date!==t)S.day={date:t,newDone:0,reviews:0,listened:0,extra:0}}
+function bumpStreak(){const t=ymd(new Date());if(S.streak.last===t)return;const y=new Date();y.setDate(y.getDate()-1);S.streak.n=S.streak.last===ymd(y)?S.streak.n+1:1;S.streak.last=t}
+function streakNow(){const t=ymd(new Date()),y=new Date();y.setDate(y.getDate()-1);return (S.streak.last===t||S.streak.last===ymd(y))?S.streak.n:0}
+
+// ---------- text helpers ----------
+const deacc=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'');
+const norm=s=>s.toLowerCase().replace(/[¿?¡!.,;:"“”()…—]/g,' ').replace(/\s+/g,' ').trim();
+const ARTG={el:'m',un:'m',los:'m',unos:'m',la:'f',una:'f',las:'f',unas:'f'};
+function splitArt(s){const w=s.split(' ');return (w.length>1&&ARTG[w[0]])?[w[0],w.slice(1).join(' ')]:['',s]}
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=t}}return d[b.length]}
+const close=(a,b)=>a===b||(b.length>=5&&lev(a,b)<=1);
+const baseEn=s=>s.toLowerCase().replace(/\(.*?\)/g,'').split('/').map(x=>x.trim().replace(/^(the|to|a) /,'')).filter(Boolean);
+
+// ---------- spaced repetition ----------
+function schedule(s,r,now){
+  s=s?{...s}:{due:now,ivl:0,ease:2.5,reps:0,lapses:0,step:0};
+  s.reps++;
+  if(s.step>=0){
+    if(r===1){s.step=0;s.due=now+STEPS[0]}
+    else if(r===2){s.due=now+STEPS[Math.min(s.step,STEPS.length-1)]*1.5}
+    else if(r===3){s.step++;if(s.step>=STEPS.length){s.step=-1;s.ivl=Math.max(1,s.ivl||1);s.due=now+s.ivl*DAY-2*HOUR}else s.due=now+STEPS[s.step]}
+    else{s.step=-1;s.ivl=Math.max(4,Math.round((s.ivl||0)*1.5));s.due=now+s.ivl*DAY-2*HOUR}
+  }else{
+    const f=.95+Math.random()*.1;
+    if(r===1){s.lapses++;s.ease=Math.max(1.3,s.ease-.2);s.ivl=Math.max(1,Math.round(s.ivl*.3));s.step=0;s.due=now+STEPS[0];return s}
+    if(r===2){s.ivl=Math.max(s.ivl+1,s.ivl*1.2);s.ease=Math.max(1.3,s.ease-.15)}
+    if(r===3){s.ivl=Math.max(s.ivl+1,s.ivl*s.ease)}
+    if(r===4){s.ivl=Math.max(s.ivl+2,s.ivl*s.ease*1.3);s.ease+=.15}
+    s.ivl=Math.round(s.ivl*f);s.due=now+s.ivl*DAY-2*HOUR;
+  }
+  return s;
+}
+function span(ms){ms=Math.max(0,ms);if(ms<HOUR)return Math.max(1,Math.round(ms/MIN))+'m';if(ms<DAY)return Math.round(ms/HOUR)+'h';const d=Math.round(ms/DAY);if(d<31)return d+'d';if(d<365)return Math.round(d/30)+'mo';return (d/365).toFixed(1)+'y'}
+function spanLong(ms){const s=span(ms);return s.replace(/m$/,' min').replace(/h$/,' h').replace(/d$/,s==='1d'?' day':' days').replace(/mo$/,' months')}
+const newLeft=()=>Math.max(0,S.settings.newPerDay+S.day.extra-S.day.newDone);
+function counts(){const now=Date.now();let lrn=0,rev=0,unseen=0;for(const c of CARDS){const s=S.cards[c.id];if(!s){unseen++;continue}if(s.due<=now)(s.step>=0?lrn++:rev++)}return {lrn,rev,nw:Math.min(newLeft(),unseen),unseen}}
+let lastId=null;
+function nextCard(){
+  const now=Date.now(),L=[],R=[],A=[];
+  for(const c of CARDS){const s=S.cards[c.id];if(!s)continue;
+    if(s.step>=0){if(s.due<=now)L.push(c);else if(s.due<=now+20*MIN)A.push(c)}else if(s.due<=now)R.push(c)}
+  const bd=(a,b)=>S.cards[a.id].due-S.cards[b.id].due;L.sort(bd);R.sort(bd);A.sort(bd);
+  const nw=newLeft()>0?CARDS.find(c=>!S.cards[c.id]):null;
+  const pools=[L,R,nw?[nw]:[],A];
+  for(const p of pools){const c=p.find(c=>c.id!==lastId);if(c)return c}
+  for(const p of pools)if(p.length)return p[0];
+  return null;
+}
+function nextDueIn(){let m=Infinity;for(const id in S.cards)m=Math.min(m,S.cards[id].due);return m===Infinity?null:m-Date.now()}
+
+// ---------- grading a typed answer ----------
+function grade(card,input){
+  const a=norm(input);
+  if(!a)return {kind:'wrong',def:1,label:'No answer'};
+  const targets=[];
+  for(const alt of card.alts){const t=norm(alt);targets.push(t);if(card.tag==='adj'&&/o$/.test(t))targets.push(t.slice(0,-1)+'a')}
+  const show=card.es;
+  for(const t of targets){
+    if(a===t)return {kind:'right',def:3,label:'Correct'};
+    const [ta,tw]=splitArt(t),[aa,aw]=splitArt(a);
+    const same=(x,y)=>x===y,noAcc=(x,y)=>deacc(x)===deacc(y)&&x!==y,typo=(x,y)=>close(deacc(x),deacc(y));
+    for(const [test,kind] of [[same,'right'],[noAcc,'accent'],[typo,'typo']]){
+      let ok=false,art='';
+      if(ta){ if(test(aw,tw)){ok=true;art=!aa?'missing':(ARTG[aa]===ARTG[ta]?'':'gender')} else if(!aa&&test(a,tw)){ok=true;art='missing'} }
+      else if(test(a,t)){ok=true}
+      if(!ok)continue;
+      if(art==='gender')return {kind:'almost',def:2,label:'Almost: check the gender',note:`It's <b>${esc(show)}</b>. Learn nouns with their article.`};
+      const notes=[];
+      if(kind==='accent')notes.push(`Watch the accent: <b>${esc(show)}</b>.`);
+      if(kind==='typo')notes.push(`Small typo. It's <b>${esc(show)}</b>.`);
+      if(art==='missing')notes.push(`Learn it with its article: <b>${esc(show)}</b>.`);
+      return {kind:kind==='right'?'right':'almost',def:3,label:kind==='right'?'Correct':'Close enough',note:notes.join(' ')};
+    }
+  }
+  // another card with the same meaning?
+  const mine=baseEn(card.en);
+  for(const o of CARDS){if(o===card)continue;
+    if(!baseEn(o.en).some(x=>mine.includes(x)))continue;
+    if(o.alts.some(alt=>{const t=norm(alt),[,tw]=splitArt(t);return deacc(a)===deacc(t)||deacc(a)===deacc(tw)}))
+      return {kind:'almost',def:2,label:'Also right, different word',note:`<b>${esc(o.es)}</b> means that too. This card is <b>${esc(show)}</b>.`};
+  }
+  return {kind:'wrong',def:1,label:'Not quite',you:input.trim()};
+}
+function hintFor(card){
+  const w=splitArt(norm(card.alts[0]))[1];
+  const toks=card.ses.split(' ');
+  let idx=toks.findIndex(t=>deacc(norm(t))===deacc(w));
+  if(idx<0&&card.tag==='v'){const stem=deacc(w.replace(/se$/,'').slice(0,-2));if(stem.length>=3)idx=toks.findIndex(t=>deacc(norm(t)).startsWith(stem))}
+  if(idx<0&&card.tag==='adj'&&w.length>3){const stem=deacc(w.slice(0,-1));idx=toks.findIndex(t=>deacc(norm(t)).startsWith(stem))}
+  const first=card.es.split(' ').map(x=>x[0]+'_'.repeat(Math.max(0,x.length-1)).split('').join(' ')).join('  ');
+  let cloze='';
+  if(idx>=0&&!w.includes(' ')){cloze=toks.map((t,i)=>i===idx?t.replace(/[\p{L}]+/u,m=>'_'.repeat(m.length)):t).join(' ')}
+  return {first,cloze};
+}
+
+// ---------- speech ----------
+const SYN=('speechSynthesis' in window)?window.speechSynthesis:null;
+let VOICES=[];
+const NOVELTY=/^(Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley|Bad News|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Albert|Fred|Junior|Kathy|Ralph)\b/i;
+function loadVoices(){if(!SYN)return;VOICES=SYN.getVoices().filter(v=>/^es/i.test(v.lang));VOICES.sort((a,b)=>(NOVELTY.test(a.name)-NOVELTY.test(b.name))||a.lang.localeCompare(b.lang)||a.name.localeCompare(b.name))}
+if(SYN){loadVoices();SYN.addEventListener?.('voiceschanged',()=>{loadVoices();if(view==='settings'||view==='home')render()})}
+function voice(){const ok=VOICES.filter(v=>!NOVELTY.test(v.name));
+  return VOICES.find(v=>v.voiceURI===S.settings.voice)
+   ||ok.find(v=>/paulina|m[oó]nica/i.test(v.name)&&/premium|enhanced|mejorad/i.test(v.name))
+   ||ok.find(v=>/paulina/i.test(v.name))||ok.find(v=>/m[oó]nica/i.test(v.name))
+   ||ok.find(v=>/es[-_](MX|US|419)/i.test(v.lang))||ok.find(v=>/es[-_]ES/i.test(v.lang))||ok[0]||VOICES[0]||null}
+let speakGen=0;
+function utter(text,rate){const u=new SpeechSynthesisUtterance(text);const v=voice();if(v){u.voice=v;u.lang=v.lang}else u.lang='es-ES';u.rate=rate;return u}
+function stopSpeech(){speakGen++;if(SYN)SYN.cancel();clearInterval(estTimer);document.querySelectorAll('.w.on').forEach(e=>e.classList.remove('on'));document.querySelector('.playbig')?.classList.remove('speaking')}
+let estTimer=0;
+// speak a sentence; onword(charIndex) drives the word highlight. Falls back to a timing estimate when the voice sends no word boundaries.
+function speak(text,rate,{onword,onend}={}){
+  if(!SYN){toast('This browser has no speech voices.');return}
+  stopSpeech();const gen=speakGen;
+  const u=utter(text,rate);let gotB=false,t0=0;
+  u.onstart=()=>{t0=performance.now();if(!onword)return;onword(0);
+    setTimeout(()=>{if(gotB||gen!==speakGen)return;const cps=13.5*rate;estTimer=setInterval(()=>{if(gen!==speakGen){clearInterval(estTimer);return}const ci=Math.floor((performance.now()-t0)/1000*cps);if(ci>text.length)clearInterval(estTimer);else onword(ci)},90)},450)};
+  u.onboundary=e=>{if(e.name&&e.name!=='word')return;gotB=true;clearInterval(estTimer);onword&&onword(e.charIndex)};
+  u.onend=u.onerror=()=>{if(gen!==speakGen)return;clearInterval(estTimer);onend&&onend()};
+  SYN.speak(u);
+}
+// queue several chunks at once (iOS only lets the first utterance start from a tap, so they all go in now)
+function speakChunks(chunks,rate,{onchunk,onend}={}){
+  if(!SYN)return;stopSpeech();const gen=speakGen;
+  chunks.forEach((c,i)=>{const u=utter(c.text,rate);u.onstart=()=>{if(gen===speakGen)onchunk&&onchunk(i)};if(i===chunks.length-1)u.onend=u.onerror=()=>{if(gen===speakGen)onend&&onend()};SYN.speak(u)});
+}
+const say=(t,r=.85)=>speak(t,r);
+
+// ---------- icons ----------
+const I={
+  spk:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+  back:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z" fill="currentColor"/></svg>',
+};
+const spkBtn=(act,arg,label)=>`<button class="iconbtn" data-act="${act}" data-arg="${esc(arg)}" aria-label="${esc(label)}">${I.spk}</button>`;
+let toastT=0;
+function toast(msg){document.querySelector('.toast')?.remove();const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);clearTimeout(toastT);toastT=setTimeout(()=>t.remove(),2600)}
+
+// ---------- views ----------
+let view='home',cur=null,L=null,confirmReset=false;
+function go(v){stopSpeech();view=v;confirmReset=false;if(v==='cards'){cur=null;nextCardUI()}else if(v==='listen'){L=null;nextSent()}render();window.scrollTo(0,0)}
+function render(){
+  rollDay();
+  app.innerHTML=view==='home'?homeHTML():view==='cards'?cardsHTML():view==='listen'?listenHTML():settingsHTML();
+  if(view==='cards'&&cur&&cur.phase==='ask'&&S.settings.mode==='type'){const a=document.getElementById('ans');if(a&&matchMedia('(hover:hover)').matches)a.focus()}
+}
+
+function homeHTML(){
+  const c=counts();
+  const learning=Object.keys(S.cards).length;
+  const known=Object.values(S.cards).filter(s=>s.step<0).length;
+  const mastered=Object.values(S.sents).filter(s=>s.lvl>=3).length;
+  const ready=listenPool().length;
+  const due=c.lrn+c.rev;
+  const noVoice=SYN&&VOICES.length===0;
+  return `
+  <div class="bar"><div style="flex:1"></div><button class="iconbtn" data-act="go" data-arg="settings" aria-label="Settings">${I.gear}</button></div>
+  <div class="tiles" aria-hidden="true"></div>
+  <div class="brand"><div><h1>Poco a Poco<span class="tilde">~</span></h1><p class="tag">Spanish, a few words a day. Works offline.</p></div></div>
+  <div class="stats">
+    <div class="stat"><b>${known}</b><span>words known of ${CARDS.length}</span></div>
+    <div class="stat"><b>${streakNow()}</b><span>day streak</span></div>
+    <div class="stat"><b>${mastered}</b><span>sentences at full speed</span></div>
+  </div>
+  ${!SYN?'<div class="warnbox">This browser has no text-to-speech, so audio and listening won\'t work here. Safari on iPhone does support it.</div>':noVoice?'<div class="warnbox">No Spanish voice found yet. On iPhone: Settings → Accessibility → Spoken Content → Voices → Spanish, then download one (Paulina or Mónica).</div>':''}
+  <section class="panel act">
+    <span class="label">Vocabulary</span>
+    <h3>Flashcards</h3>
+    <p class="muted small">See the English, recall the Spanish. Words come back right before you'd forget them.</p>
+    <div class="meta chips"><span class="chip rev">${due} due</span><span class="chip new">${c.nw} new today</span><span class="chip">${learning} started</span></div>
+    <button class="btn" data-act="go" data-arg="cards">${due||c.nw?'Start session':'Practice'}</button>
+  </section>
+  <section class="panel act">
+    <span class="label">Listening</span>
+    <h3>Sentence trainer</h3>
+    <p class="muted small">Hear a sentence slow, then faster. Count the words, type what you hear, and see where the sounds run together.</p>
+    <div class="meta chips"><span class="chip">${ready} sentences ready</span><span class="chip">${S.day.listened} today</span></div>
+    <button class="btn" data-act="go" data-arg="listen">Start listening</button>
+  </section>`;
+}
+
+// ----- flashcards -----
+function nextCardUI(){const c=nextCard();cur=c?{card:c,phase:'ask',hint:null,res:null,isNew:!S.cards[c.id]}:{done:true};if(c)lastId=c.id}
+function cardsHTML(){
+  const c=counts();
+  const top=`<div class="bar"><button class="iconbtn" data-act="go" data-arg="home" aria-label="Back to home">${I.back}</button><h2>Flashcards</h2>
+    <div class="chips" aria-label="Remaining"><span class="chip new" title="new">${c.nw}</span><span class="chip lrn" title="learning">${c.lrn}</span><span class="chip rev" title="review">${c.rev}</span></div></div>`;
+  if(cur.done){
+    const nd=nextDueIn();
+    return top+`<section class="panel done"><span class="label">Session done</span><h2>¡Muy bien!</h2>
+      <p class="muted">${S.day.reviews} cards today.${nd!=null?` Next card due in ${spanLong(nd)}.`:''}</p>
+      <div class="row" style="justify-content:center">
+        ${c.unseen?'<button class="btn" data-act="more">Learn 5 more words</button>':''}
+        <button class="btn line" data-act="go" data-arg="listen">Practice listening</button></div></section>`;
+  }
+  const k=cur.card,typed=S.settings.mode==='type';
+  let h=top+`<section class="panel prompt">
+    <span class="label">${cur.isNew?'New · ':''}${TAGS[k.tag]||k.tag}</span>
+    <div class="en">${esc(k.en)}</div>
+    <p class="ctx">“${esc(k.sen)}”</p>
+    ${cur.hint?`<p class="cloze"><b>${esc(cur.hint.first)}</b>${cur.hint.cloze?`<br><span class="muted">${esc(cur.hint.cloze)}</span>`:''}</p>`:''}
+  </section>`;
+  if(cur.phase==='ask'){
+    if(typed)h+=`<div class="ansbox">
+      <label class="label" for="ans">Type the Spanish</label>
+      <input id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="es" enterkeyhint="go" placeholder="en español…">
+      <div class="accents">${['á','é','í','ó','ú','ñ','ü'].map(ch=>`<button data-act="acc" data-arg="${ch}" aria-label="Insert ${ch}">${ch}</button>`).join('')}</div>
+      <button class="btn" data-act="check">Check</button>
+      <div class="links"><button data-act="hint" ${cur.hint?'disabled':''}>Hint</button><button data-act="idk">I don't know</button></div></div>`;
+    else h+=`<p class="muted small">Say it in your head (or out loud), then check.</p><button class="btn" data-act="reveal">Show answer</button>`;
+    return h;
+  }
+  const r=cur.res;
+  if(r)h+=`<div class="res ${r.kind}" role="status">${r.label}${r.you?`: <span class="you">${esc(r.you)}</span>`:''}${r.note?`<span class="note">${r.note}</span>`:''}</div>`;
+  h+=`<section class="panel">
+    <div class="answer"><div class="es">${esc(k.es)}${k.alts.length>1?`<span class="alts">also ${k.alts.slice(1).map(esc).join(', ')}</span>`:''}</div>${spkBtn('sayword',k.es,'Hear the word')}</div>
+    <div class="say"><p><span class="es-s" lang="es">${esc(k.ses)}</span><br><span class="muted small">${esc(k.sen)}</span></p>${spkBtn('saysent',k.ses,'Hear the sentence')}</div>
+  </section>`;
+  const now=Date.now(),s=S.cards[k.id];
+  const names=['Again','Hard','Good','Easy'];
+  h+=`<div class="rates">${[1,2,3,4].map(n=>`<button class="rate r${n}${n===cur.def?' def':''}" data-act="rate" data-arg="${n}"><b>${names[n-1]}</b><span>${span(schedule(s,n,now).due-now)}</span></button>`).join('')}</div>`;
+  return h;
+}
+function showAnswer(res){cur.phase='shown';cur.res=res||null;cur.def=res?Math.min(res.def,cur.hint?2:4):3;render();if(S.settings.autoplay)say(cur.card.es,.85)}
+function rateCard(n){
+  const k=cur.card,now=Date.now();
+  S.cards[k.id]=schedule(S.cards[k.id],n,now);
+  if(cur.isNew)S.day.newDone++;
+  S.day.reviews++;bumpStreak();save();
+  stopSpeech();nextCardUI();render();
+}
+
+// ----- listening -----
+function toks(s){const out=[];let pos=0;for(const raw of s.split(' ')){const st=s.indexOf(raw,pos);pos=st+raw.length;const core=raw.replace(/^[¿¡"“(—-]+|[.,;:!?"”)…]+$/g,'');if(core)out.push({raw,core,start:st,brk:/[.,;:!?…]["”)]?$/.test(raw)})}return out}
+function linkType(a,b){if(a.brk)return 0;const x=deacc(a.core.toLowerCase()),y=deacc(b.core.toLowerCase());
+  const endV=/[aeiouy]$/.test(x),startV=/^h?[aeiou]/.test(y)||y==='y';
+  if(endV&&startV)return 2;if(startV&&/[a-z]$/.test(x))return 1;return 0}
+function chunksOf(t){const out=[];let cur=[];t.forEach((w,i)=>{cur.push(i);if(w.brk||cur.length>=3&&!(i+1<t.length&&linkType(w,t[i+1])===2)){out.push(cur);cur=[]}});if(cur.length)out.push(cur);return out}
+const WORDIDX={};
+for(const c of CARDS)for(const alt of c.alts){const w=splitArt(norm(alt))[1];if(!w.includes(' '))WORDIDX[w]=WORDIDX[w]||c.id}
+function listenPool(){
+  const seen=CARDS.filter(c=>S.cards[c.id]);
+  return (seen.length>=8?seen:CARDS.slice(0,Math.max(20,seen.length)));
+}
+let lastSid=null;
+function nextSent(){
+  const now=Date.now(),pool=listenPool();
+  const due=pool.filter(c=>S.sents[c.id]&&S.sents[c.id].due<=now&&S.sents[c.id].lvl<3&&c.id!==lastSid).sort((a,b)=>S.sents[a.id].lvl-S.sents[b.id].lvl||S.sents[a.id].due-S.sents[b.id].due);
+  const fresh=pool.filter(c=>!S.sents[c.id]&&c.id!==lastSid);
+  const fallback=CARDS.filter(c=>!S.sents[c.id]&&c.id!==lastSid);
+  const soon=pool.filter(c=>S.sents[c.id]&&c.id!==lastSid).sort((a,b)=>S.sents[a.id].due-S.sents[b.id].due);
+  const pick=due[0]||fresh[0]||fallback[0]||soon[0]||CARDS[0];
+  lastSid=pick.id;
+  const st=S.sents[pick.id];
+  L={card:pick,t:toks(pick.ses),spd:Math.min(2,st?st.lvl:0),count:false,text:false,trans:false,typing:false,ok:null,added:[],explain:false,plays:0};
+}
+function wordsHTML(){
+  const t=L.t;let h='';
+  t.forEach((w,i)=>{
+    let cls='w';if(!L.text)cls+=' blank';if(L.ok)cls+=L.ok[i]?' ok':' miss';
+    const width=!L.text?` style="width:${(w.core.length*.62+.3).toFixed(2)}em"`:'';
+    h+=`<button class="${cls}" data-act="tapword" data-arg="${i}"${width} aria-label="${L.text?esc(w.core):'word '+(i+1)}" lang="es">${L.text?esc(w.raw.replace(/^[—-]/,'')):'·'}</button>`;
+    if(i<t.length-1){const lt=L.text?linkType(w,t[i+1]):0;h+=lt?`<span class="lk l${lt}" aria-hidden="true"></span>`:'<span class="gap"></span>'}
+  });
+  return `<div class="words" id="words">${h}</div>`;
+}
+function listenHTML(){
+  const k=L.card,st=S.sents[k.id];
+  const lvl=st?st.lvl:0;
+  let h=`<div class="bar"><button class="iconbtn" data-act="go" data-arg="home" aria-label="Back to home">${I.back}</button><h2>Listening</h2>
+    <div class="chips"><span class="chip">${lvl>=3?'Full speed ✓':'Target: '+LNAME[Math.min(lvl,2)]}</span></div></div>
+  <div class="speeds" role="group" aria-label="Speed">${LAD.map((r,i)=>`<button class="${i===L.spd?'on':''}" data-act="spd" data-arg="${i}" aria-pressed="${i===L.spd}"><b>${LNAME[i]}</b><span>${Math.round(r*100)}%</span></button>`).join('')}</div>
+  <div class="player">
+    <div class="side"><button class="btn plain" data-act="chunks">In pieces</button></div>
+    <button class="playbig" data-act="play" aria-label="Play sentence">${I.play}</button>
+    <div class="side"><button class="btn plain" data-act="slower">Slower</button></div>
+  </div>`;
+  if(!L.plays&&!L.count&&!L.text)h+=`<p class="muted small" style="text-align:center">Listen first. Replay as often as you like. Reveal more only when you need it.</p>`;
+  h+=`<section class="panel">`;
+  if(L.count||L.text){
+    h+=`<span class="label">${L.text?'The sentence':'Word count: '+L.t.length+' words'}</span>${wordsHTML()}`;
+    h+=`<p class="muted small">Tap any word to hear it on its own.</p>`;
+    if(L.text)h+=`<div class="legend"><span><i></i>vowels merge</span><span><i class="l1"></i>consonant slides over</span><button class="btn small line" data-act="explain">${L.explain?'Hide':'Why?'}</button></div>
+      ${L.explain?`<p class="explain">Spanish doesn't pause between words. When one word ends in a vowel and the next starts with one, they melt into a single syllable: <i>va a ir</i> sounds like “vair”, <i>lo que es</i> like “lo-kes”. A final consonant jumps onto the next word's vowel: <i>los amigos</i> sounds like “lo-sa-mi-gos”. A silent <i>h</i> doesn't stop the blend.</p>`:''}`;
+    if(L.trans)h+=`<p class="trans">${esc(k.sen)}</p>`;
+  }
+  if(L.ok){const n=L.ok.filter(Boolean).length;h+=`<p class="score">${n} of ${L.ok.length} words${n===L.ok.length?'. Perfect!':''}</p>`}
+  if(L.added.length)h+=`<p class="added">Added to your flashcards: <b>${L.added.map(id=>esc(BYID[id].es)).join(', ')}</b></p>`;
+  if(L.typing&&!L.ok)h+=`<label class="label" for="dict">Type what you hear</label><textarea id="dict" rows="2" lang="es" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" placeholder="Accents optional"></textarea><button class="btn" data-act="dictcheck">Check</button>`;
+  const steps=[];
+  if(!L.count&&!L.text)steps.push(['count','Count the words']);
+  if(!L.typing&&!L.text)steps.push(['type','Type it']);
+  if(!L.text)steps.push(['text','Show the text']);
+  else if(!L.trans)steps.push(['trans','Translation']);
+  if(steps.length)h+=`<div class="row">${steps.map(([a,lbl])=>`<button class="btn line small grow" data-act="${a}">${lbl}</button>`).join('')}</div>`;
+  h+=`</section>`;
+  if(L.text){
+    const def=L.ok?(L.ok.every(Boolean)?3:L.ok.filter(Boolean).length/L.ok.length>=.6?2:1):0;
+    h+=`<span class="label">How did you do at ${LNAME[L.spd].toLowerCase()} speed?</span><div class="lrates">
+      ${[[1,'Missed it'],[2,'Partly'],[3,'Got it']].map(([n,lbl])=>`<button class="rate r${n}${n===def?' def':''}" data-act="lrate" data-arg="${n}"><b>${lbl}</b></button>`).join('')}</div>`;
+  }
+  return h;
+}
+function highlight(ci){const w=document.querySelectorAll('#words .w');if(!w.length)return;let idx=0;L.t.forEach((t,i)=>{if(t.start<=ci)idx=i});w.forEach((e,i)=>e.classList.toggle('on',i===idx))}
+function playSent(rate){
+  L.plays++;const first=L.plays===1;if(first)render();
+  const pb=document.querySelector('.playbig');pb&&pb.classList.add('speaking');
+  speak(L.card.ses,rate,{onword:ci=>highlight(ci),onend:()=>{document.querySelector('.playbig')?.classList.remove('speaking');document.querySelectorAll('.w.on').forEach(e=>e.classList.remove('on'))}});
+}
+function dictCheck(){
+  const typed=norm(document.getElementById('dict').value).split(' ').filter(Boolean).map(deacc);
+  const exp=L.t.map(t=>deacc(norm(t.core)));
+  const n=exp.length,m=typed.length,dp=Array.from({length:n+1},()=>new Array(m+1).fill(0));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=close(typed[j],exp[i])?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  const ok=new Array(n).fill(false);let i=0,j=0;
+  while(i<n&&j<m){if(close(typed[j],exp[i])){ok[i]=true;i++;j++}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++}
+  L.ok=ok;L.text=true;
+  // missed words that are in the deck go to flashcards
+  const add=new Set();const own=L.card;
+  ok.forEach((good,i)=>{if(good)return;const w=exp[i];let id=WORDIDX[norm(L.t[i].core)];
+    if(!id){const base=deacc(splitArt(norm(own.alts[0]))[1]).replace(/se$/,'');const stem=own.tag==='v'?base.slice(0,-2):base.slice(0,-1);if(stem.length>=3&&w.startsWith(stem))id=own.id}
+    if(id)add.add(id)});
+  const now=Date.now();
+  for(const id of add){const s=S.cards[id];if(!s)S.cards[id]={due:now,ivl:0,ease:2.5,reps:0,lapses:0,step:0};else if(s.due>now)s.due=now}
+  L.added=[...add];save();render();
+}
+function rateSent(n){
+  const k=L.card,now=Date.now(),st=S.sents[k.id]||{lvl:0,due:now,n:0};
+  if(n===3){st.lvl=Math.max(st.lvl,L.spd+1);st.due=now+[0,10*MIN,DAY,4*DAY][st.lvl]}
+  else if(n===2){st.due=now+3*MIN}
+  else{st.lvl=Math.min(st.lvl,L.spd);st.due=now+2*MIN}
+  st.n++;S.sents[k.id]=st;S.day.listened++;bumpStreak();save();
+  stopSpeech();nextSent();render();window.scrollTo(0,0);
+}
+
+// ----- settings -----
+function settingsHTML(){
+  const st=S.settings,cv=voice();
+  const opts=VOICES.map(v=>`<option value="${esc(v.voiceURI)}"${cv&&v.voiceURI===cv.voiceURI?' selected':''}>${esc(v.name)} (${esc(v.lang)})</option>`).join('');
+  return `<div class="bar"><button class="iconbtn" data-act="go" data-arg="home" aria-label="Back to home">${I.back}</button><h2>Settings</h2></div>
+  <section class="panel">
+    <div class="field"><label class="label" for="voice">Voice</label>
+      ${VOICES.length?`<select id="voice" data-set="voice">${opts}</select>`:'<p class="muted small">No Spanish voices found. On iPhone, add one in Settings → Accessibility → Spoken Content → Voices → Spanish.</p>'}
+    </div>
+    <button class="btn plain small" data-act="saysent" data-arg="Hola, ¿qué tal? Vamos a aprender español poco a poco.">${I.spk} Test voice</button>
+  </section>
+  <section class="panel">
+    <div class="field"><label class="label" for="npd">New words per day</label>
+      <select id="npd" data-set="newPerDay">${[5,10,15,20,30].map(n=>`<option${n===st.newPerDay?' selected':''}>${n}</option>`).join('')}</select></div>
+    <div class="field"><span class="label">Answer style</span>
+      <div class="seg" role="group"><button class="${st.mode==='type'?'on':''}" data-act="mode" data-arg="type" aria-pressed="${st.mode==='type'}">Type it</button><button class="${st.mode==='flip'?'on':''}" data-act="mode" data-arg="flip" aria-pressed="${st.mode==='flip'}">Flip card</button></div></div>
+    <div class="field"><span class="label">Say the answer out loud when shown</span>
+      <div class="seg" role="group"><button class="${st.autoplay?'on':''}" data-act="auto" data-arg="1" aria-pressed="${st.autoplay}">On</button><button class="${!st.autoplay?'on':''}" data-act="auto" data-arg="0" aria-pressed="${!st.autoplay}">Off</button></div></div>
+  </section>
+  <section class="panel">
+    <span class="label">Backup</span>
+    <p class="muted small">Progress is saved on this device only. Copy it somewhere safe, or paste a backup to restore it.</p>
+    <textarea id="backup" spellcheck="false" placeholder="Paste a backup here to restore"></textarea>
+    <div class="row"><button class="btn plain small grow" data-act="export">Copy progress</button><button class="btn plain small grow" data-act="import">Restore from box</button></div>
+  </section>
+  <section class="panel">
+    <span class="label danger">Start over</span>
+    ${confirmReset?`<p class="small">This erases every card and listening level on this device. It can't be undone.</p><div class="row"><button class="btn dangerbtn small grow" data-act="reset2">Erase progress</button><button class="btn plain small grow" data-act="reset0">Keep it</button></div>`:`<button class="btn plain small" data-act="reset1">Reset progress…</button>`}
+  </section>
+  <p class="muted small" style="text-align:center">${CARDS.length} words · build c99f6b3</p>`;
+}
+
+// ---------- events ----------
+app.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act,arg=b.dataset.arg;
+  switch(a){
+    case 'go':go(arg);break;
+    case 'acc':{const i=document.getElementById('ans');if(!i)break;const s=i.selectionStart??i.value.length,en=i.selectionEnd??s;i.value=i.value.slice(0,s)+arg+i.value.slice(en);i.focus();i.setSelectionRange(s+1,s+1);break}
+    case 'check':showAnswer(grade(cur.card,document.getElementById('ans').value));break;
+    case 'idk':showAnswer({kind:'wrong',def:1,label:"Here's the answer"});break;
+    case 'hint':cur.hint=hintFor(cur.card);{const v=document.getElementById('ans')?.value||'';render();const i=document.getElementById('ans');if(i)i.value=v}break;
+    case 'reveal':showAnswer(null);break;
+    case 'rate':rateCard(+arg);break;
+    case 'more':S.day.extra+=5;save();nextCardUI();render();break;
+    case 'sayword':say(arg,.8);break;
+    case 'saysent':say(arg,.9);break;
+    case 'spd':L.spd=+arg;render();playSent(LAD[L.spd]);break;
+    case 'play':playSent(LAD[L.spd]);break;
+    case 'slower':playSent(Math.max(.45,LAD[L.spd]-.2));break;
+    case 'chunks':{L.plays++;const ch=chunksOf(L.t);if(!L.count&&!L.text){L.count=true;render()}
+      speakChunks(ch.map(c=>({text:c.map(i=>L.t[i].core).join(' ')})),Math.max(.5,LAD[L.spd]-.1),{onchunk:n=>{document.querySelectorAll('#words .w').forEach((e,i)=>e.classList.toggle('on',ch[n].includes(i)))},onend:()=>document.querySelectorAll('.w.on').forEach(e=>e.classList.remove('on'))});break}
+    case 'tapword':{const w=L.t[+arg];if(w){say(w.core,.7);document.querySelectorAll('#words .w').forEach((e,i)=>e.classList.toggle('on',i===+arg));setTimeout(()=>document.querySelectorAll('.w.on').forEach(e=>e.classList.remove('on')),900)}break}
+    case 'count':L.count=true;render();break;
+    case 'type':L.typing=true;L.count=true;render();document.getElementById('dict')?.focus();break;
+    case 'dictcheck':dictCheck();break;
+    case 'text':L.text=true;L.count=true;render();break;
+    case 'trans':L.trans=true;render();break;
+    case 'explain':L.explain=!L.explain;render();break;
+    case 'lrate':rateSent(+arg);break;
+    case 'mode':S.settings.mode=arg;save();render();break;
+    case 'auto':S.settings.autoplay=arg==='1';save();render();break;
+    case 'export':{const txt=JSON.stringify(S);const box=document.getElementById('backup');box.value=txt;
+      const fall=()=>{box.focus();box.select();toast('Selected. Copy it from the box.')};
+      try{navigator.clipboard.writeText(txt).then(()=>toast('Progress copied.'),fall)}catch(err){fall()}break}
+    case 'import':{try{const s=JSON.parse(document.getElementById('backup').value);if(!s||!s.cards)throw 0;const b=blank();S={...b,...s,settings:{...b.settings,...s.settings},day:{...b.day,...s.day},streak:{...b.streak,...s.streak}};save();toast('Progress restored.');render()}catch(err){toast("That doesn't look like a Poco a Poco backup.")}break}
+    case 'reset1':confirmReset=true;render();break;
+    case 'reset0':confirmReset=false;render();break;
+    case 'reset2':S=blank();save();confirmReset=false;toast('Progress erased.');render();break;
+  }
+});
+app.addEventListener('change',e=>{const k=e.target.dataset.set;if(!k)return;S.settings[k]=k==='newPerDay'?+e.target.value:e.target.value;save();if(k==='voice')say('Hola, ¿qué tal?',.9)});
+app.addEventListener('keydown',e=>{
+  if(view!=='cards'||!cur||cur.done)return;
+  if(e.target.id==='ans'&&e.key==='Enter'){e.preventDefault();showAnswer(grade(cur.card,e.target.value));return}
+  if(cur.phase==='shown'&&e.target.tagName!=='TEXTAREA'){if(e.key==='Enter'){e.preventDefault();rateCard(cur.def)}else if(/^[1-4]$/.test(e.key))rateCard(+e.key)}
+});
+document.addEventListener('keydown',e=>{if(view==='cards'&&cur&&cur.phase==='shown'&&e.target===document.body){if(e.key==='Enter')rateCard(cur.def);else if(/^[1-4]$/.test(e.key))rateCard(+e.key)}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech();else if(view==='home')render()});
+
+rollDay();render();
+})();
+
+</script>
