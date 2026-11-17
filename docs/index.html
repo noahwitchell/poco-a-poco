@@ -322,7 +322,7 @@ function chime(ok){if(!S.settings.sounds||!AC)return;try{const t=AC.currentTime;
 const SRC=window.SpeechRecognition||window.webkitSpeechRecognition;
 const inFrame=(()=>{try{return window.top!==window}catch(e){return true}})();
 const Mic={kind:(SRC&&!inFrame)?'sr':null,needTap:false,rec:null,d:null,dictOn:false,cb:null,quietUntil:0,live:false,
-  route(text,final){if(!this.cb||Date.now()<this.quietUntil||speakingNow)return;text=text.trim();if(!text)return;this.cb.onText([text],final)}};
+  route(text,final){text=text.trim();if(!text)return;mlog('dictation '+(final?'final':'partial')+': "'+text+'"');if(!this.cb||Date.now()<this.quietUntil||speakingNow){mlog('ignored');return}this.cb.onText([text],final)}};
 if(!Mic.kind&&window.claude&&typeof window.claude.use==='function'){
   window.claude.use('dictation').then(d=>{if(!d)return;Mic.d=d;Mic.kind='dict';Mic.needTap=true;
     d.onPartial(({text})=>Mic.route(text,false));d.onFinal(({text})=>Mic.route(text,true));
@@ -330,6 +330,17 @@ if(!Mic.kind&&window.claude&&typeof window.claude.use==='function'){
       if(state==='idle'){Mic.needTap=true;if(reason==='not_granted'||reason==='unavailable')Mic.kind=null;if(Mic.cb)Mic.cb.onFail('tap')}
       paintMic()});
     if(view==='home')render()}).catch(()=>{});
+}
+const MICLOG=[];
+function mlog(m){MICLOG.push((performance.now()/1000).toFixed(1)+'s  '+m);if(MICLOG.length>40)MICLOG.shift();const el=$('#miclog');if(el)el.textContent=MICLOG.join('\n')}
+const voiceBusy=()=>speakingNow; // our own flag: browsers' speechSynthesis.speaking can get stuck on true
+// run fn once the app's own voice has stopped (plus a beat, so the mic can't hear the tail of it)
+function whenQuiet(fn,gesture){
+  if(gesture&&!voiceBusy()&&Date.now()>=Mic.quietUntil){fn(true);return}
+  const t0=Date.now();
+  const tick=()=>{if(voiceBusy()&&Date.now()-t0<8000){setTimeout(tick,150);return}
+    setTimeout(()=>fn(false),Math.max(600,Mic.quietUntil-Date.now()))};
+  tick();
 }
 const micLang=()=>{const v=voice();return v&&/^es/i.test(v.lang)?v.lang.replace('_','-'):'es-MX'};
 function micStop(){Mic.cb=null;Mic.live=Mic.kind==='dict'&&Mic.dictOn;if(Mic.rec){const r=Mic.rec;Mic.rec=null;Mic.live=false;try{r.abort()}catch(e){}}paintMic()}
@@ -346,19 +357,26 @@ function micListen(cb,gesture){
   if(Mic.kind!=='sr'){cb.onFail('blocked');return}
   const r=new SRC();r.lang=micLang();r.interimResults=true;r.maxAlternatives=5;r.continuous=false;
   let finalSeen=false,failed=false,last=null;
-  r.onresult=e=>{if(Mic.rec!==r)return;const res=e.results[e.results.length-1];const n=Math.max(1,res.length);const texts=[];
-    for(let k=0;k<n;k++)texts.push(Array.from(e.results).map(rr=>(rr[k]||rr[0]).transcript).join(' '));
+  r.onstart=()=>mlog('listening started ('+r.lang+')');
+  r.onspeechstart=()=>mlog('speech detected');
+  r.onresult=e=>{if(Mic.rec!==r)return;const res=e.results[e.results.length-1];const n=Math.max(1,res.length);let texts=[];
+    for(let k=0;k<n;k++)texts.push(Array.from(e.results).map(rr=>(rr[k]||rr[0]).transcript).join(' ').trim());
+    texts=texts.filter(Boolean);
+    mlog((res.isFinal?'final':'partial')+': '+(texts.length?'"'+texts[0]+'"':'(empty)'));
+    if(!texts.length)return;                       // an empty result is not an answer
+    if(voiceBusy()){mlog('ignored: app voice still playing');return}
     last=texts;if(res.isFinal)finalSeen=true;cb.onText(texts,res.isFinal)};
-  r.onerror=e=>{if(Mic.rec!==r||e.error==='aborted')return;failed=true;Mic.live=false;
+  r.onerror=e=>{mlog('error: '+e.error);if(Mic.rec!==r||e.error==='aborted')return;failed=true;Mic.live=false;if(Mic.cb===cb)Mic.cb=null;
     if(e.error==='not-allowed'||e.error==='service-not-allowed'){if(gesture){Mic.kind=null;cb.onFail('blocked')}else{Mic.needTap=true;cb.onFail('tap')}}
     else if(e.error==='network')cb.onFail('network');else cb.onFail('silence');paintMic()};
-  r.onend=()=>{if(Mic.rec!==r)return;Mic.rec=null;Mic.live=false;paintMic();if(failed||finalSeen)return;if(last)cb.onText(last,true);else cb.onFail('silence')};
+  r.onend=()=>{mlog('listening ended'+(last?'':' (nothing heard)'));if(Mic.rec!==r)return;Mic.rec=null;Mic.live=false;if(Mic.cb===cb)Mic.cb=null;paintMic();if(failed||finalSeen)return;if(last)cb.onText(last,true);else cb.onFail('silence')};
   Mic.rec=r;
-  try{r.start();Mic.live=true;Mic.needTap=false}catch(e){Mic.rec=null;Mic.needTap=true;cb.onFail('tap')}
+  try{r.start();Mic.live=true;Mic.needTap=false;mlog('start '+(gesture?'(from tap)':'(automatic)'))}catch(e){mlog('start failed: '+e.message);Mic.rec=null;Mic.needTap=true;cb.onFail('tap')}
   paintMic();
 }
 function paintMic(){const m=$('.mic');if(!m)return;const on=!!(Mic.live&&Mic.cb);m.classList.toggle('live',on);m.classList.toggle('idle',!on);m.setAttribute('aria-label',on?'Listening':'Tap to speak');
   const h=$('#heard');if(h&&!h.querySelector('b'))h.textContent=on?'Listening…':'Tap the mic and say it'}
+function micSummary(){return 'Mic: '+(Mic.kind==='sr'?'speech recognition':Mic.kind==='dict'?'claude.ai dictation':'not available')+' · '+(navigator.standalone||matchMedia('(display-mode: standalone)').matches?'home-screen app':'browser')+' · '+micLang()}
 const voiceOK=()=>S.settings.answer==='voice'&&!!Mic.kind;
 
 // ================= icons / toast =================
@@ -442,7 +460,7 @@ function showItem(gesture){
   if(it.t==='pick'){it.opts=it.opts||pickOptions(c);render();if(!SES.paused)speak(c.es,.85);return}
   render();
   if(SES.paused)return;
-  if(prodMode()==='say')startListening(gesture);
+  if(prodMode()==='say')whenQuiet(g=>{if(curItem()===it&&SES.phase==='ask'&&!SES.paused)startListening(g)},gesture);
   else{const a=$('#ans');if(a)a.focus()}
 }
 function pickOptions(c){
@@ -604,9 +622,9 @@ function playSent(rate){
 }
 function afterPlay(){
   if(view!=='listen'||!L||L.phase==='result')return;
-  L.phase='answer';
-  if(!L.typing&&voiceOK())listenBack(false);
+  L.phase='answer';L.silence=0;L.note='';
   paintLDock();
+  if(!L.typing&&voiceOK()){const me=L;whenQuiet(()=>{if(L===me&&L.phase==='answer'&&!L.typing&&!Mic.cb)listenBack(false)})}
 }
 function listenBack(gesture){
   const me=L;L.buf='';
@@ -617,7 +635,13 @@ function listenBack(gesture){
         L.heard=(L.buf+' '+(final?'':texts[0])).trim();
       }else{L.heard=texts[0];if(final)evaluate(texts)}
       const h=$('#lheard');if(h)h.textContent=L.heard;},
-    onFail:why=>{if(L!==me||L.phase==='result')return;if(why==='blocked'){L.typing=true;toast('Microphone is off for this app. Type instead.')}paintLDock()}
+    onFail:why=>{if(L!==me||L.phase==='result')return;
+      if(why==='blocked'){L.typing=true;toast('Microphone is off for this app. Type instead.')}
+      else if(why==='silence'||why==='tap'){L.silence=(L.silence||0)+1;
+        if(why==='silence'&&L.silence<2&&Mic.kind==='sr'){setTimeout(()=>{if(L===me&&L.phase==='answer'&&!Mic.cb)listenBack(false)},300);return}
+        L.note=why==='tap'?'Tap the mic, then say it back.':"I didn't catch that. Tap the mic and say it back."}
+      else if(why==='network')L.note='Speech recognition needs a connection here.';
+      paintLDock()}
   },gesture);
   paintLDock();
 }
@@ -633,6 +657,8 @@ function diffWords(typed){
 }
 function evaluate(texts){
   if(!L||L.phase==='result')return;
+  texts=texts.map(t=>(t||'').trim()).filter(Boolean);
+  if(!texts.length){micStop();L.note="I didn't catch that. Tap the mic and say it back.";paintLDock();return}
   micStop();clearTimeout(L.bufT);
   let best=null;for(const t of texts){const ok=diffWords(normS(t).split(' ').filter(Boolean).map(deacc));if(!best||ok.filter(Boolean).length>best.filter(Boolean).length)best=ok}
   L.ok=best;finishSentence(best.filter(Boolean).length/best.length);
@@ -699,7 +725,7 @@ function ldockHTML(){
   const live=!!(Mic.live&&Mic.cb),waiting=L.phase==='listen';
   return `<p class="heard" id="lheard">${esc(L.heard)}</p>
     <button class="mic ${live?'live':'idle'}" data-act="lmic" aria-label="${live?'Listening':'Tap to speak'}">${I.mic}</button>
-    <p class="tapnote">${waiting?'Listen, then say it back.':live?'Say it back…':'Tap the mic and say it back.'}</p>
+    <p class="tapnote">${waiting?'Listen, then say it back.':live?'Listening… say it back.':esc(L.note||'Tap the mic and say it back.')}</p>
     <div class="row" style="justify-content:center"><button class="linkbtn" data-act="usetype">Type instead</button><button class="linkbtn" data-act="giveup">Show me</button></div>`;
 }
 function paintLDock(){const d=$('#ldock');if(d&&view==='listen')d.innerHTML=ldockHTML()}
@@ -770,6 +796,13 @@ function settingsHTML(){
     <div class="field"><span class="label">Sounds</span>${seg('sounds',[[true,'On'],[false,'Off']])}</div>
   </section>
   <section class="panel">
+    <span class="label">Microphone check</span>
+    <p class="muted small">Tap Test, then say something in Spanish. If answers aren't being heard, a screenshot of this box shows what's going wrong.</p>
+    <button class="btn plain small" data-act="mictest">${I.mic} Test microphone</button>
+    <p class="heard" id="mictest">${esc(micSummary())}</p>
+    <pre id="miclog" style="font:12px/1.4 ui-monospace,Menlo,monospace;white-space:pre-wrap;margin:0;max-height:180px;overflow:auto;background:var(--paper);border-radius:10px;padding:8px">${esc(MICLOG.join('\n')||'No microphone events yet.')}</pre>
+  </section>
+  <section class="panel">
     <span class="label">Backup</span>
     <p class="muted small">Progress is saved on this device only. Copy it somewhere safe, or paste a backup to restore it.</p>
     <textarea id="backup" spellcheck="false" placeholder="Paste a backup here to restore"></textarea>
@@ -779,7 +812,7 @@ function settingsHTML(){
     <span class="label danger">Start over</span>
     ${confirmReset?`<p class="small">This erases every word and listening level on this device. It can't be undone.</p><div class="row"><button class="btn dangerbtn small grow" data-act="reset2">Erase progress</button><button class="btn plain small grow" data-act="reset0">Keep it</button></div>`:`<button class="btn plain small" data-act="reset1">Reset progress…</button>`}
   </section>
-  <p class="muted small center">${CARDS.length} words · build 429f83d</p></div>`;
+  <p class="muted small center">${CARDS.length} words · build 83b958c</p></div>`;
 }
 
 // ================= events =================
@@ -803,6 +836,9 @@ app.addEventListener('click',e=>{
     case 'check':{const v=$('#ans').value;if(v.trim())answer(gradeTyped(BYID[curItem().id],v));break}
     case 'acc':{const i=$('#ans');if(!i)break;const s=i.selectionStart??i.value.length,en=i.selectionEnd??s;i.value=i.value.slice(0,s)+arg+i.value.slice(en);i.focus();i.setSelectionRange(s+1,s+1);break}
     case 'override':overrideRight();break;
+    case 'mictest':{stopSpeech();const out=$('#mictest');if(out)out.textContent='Listening… say something.';
+      micListen({onText:(t,f)=>{const o=$('#mictest');if(o)o.innerHTML='Heard: <b>'+esc(t[0])+'</b>'+(f?' ✓':'');if(f)micStop()},
+        onFail:w=>{const o=$('#mictest');if(o)o.textContent=w==='silence'?"Didn't hear anything. Try again a little louder.":w==='blocked'?'The microphone is blocked for this app. Check Settings → Safari → Microphone, or Settings → Privacy → Speech Recognition.':w==='network'?'Speech recognition needs an internet connection here.':'Tap Test again.'}},true);break}
     case 'say':if(SES&&SES.phase==='ask'&&curItem()?.t==='prod')break;speak(arg,+(b.dataset.rate||.85));break;
     // listening
     case 'spd':L.spd=+arg;document.querySelectorAll('.speeds button').forEach((x,i)=>{x.classList.toggle('on',i===L.spd);x.setAttribute('aria-pressed',String(i===L.spd))});playSent(LAD[L.spd]);break;
@@ -810,7 +846,7 @@ app.addEventListener('click',e=>{
     case 'slower':playSent(Math.max(.45,LAD[L.spd]-.2));break;
     case 'chunks':{micStop();const ch=chunksOf(L.t);speakChunks(ch.map(c=>c.map(i=>L.t[i].core).join(' ')),Math.max(.5,LAD[L.spd]-.1),{onchunk:n=>{document.querySelectorAll('#words .w').forEach((x,i)=>x.classList.toggle('on',ch[n].includes(i)))},onend:()=>{document.querySelectorAll('.w.on').forEach(x=>x.classList.remove('on'));afterPlay()}});break}
     case 'tapword':{const w=L.t[+arg];if(w){micStop();speak(w.core,.7,{onend:afterPlay});document.querySelectorAll('#words .w').forEach((x,i)=>x.classList.toggle('on',i===+arg));setTimeout(()=>document.querySelectorAll('.w.on').forEach(x=>x.classList.remove('on')),900)}break}
-    case 'lmic':if(L.phase!=='result'){stopSpeech();L.phase='answer';listenBack(true)}break;
+    case 'lmic':if(L.phase!=='result'){stopSpeech();L.phase='answer';L.note='';L.silence=0;listenBack(true)}break;
     case 'usetype':micStop();L.typing=true;paintLDock();$('#dict')?.focus();break;
     case 'usemic':L.typing=false;L.phase='answer';listenBack(true);break;
     case 'dictcheck':{const v=$('#dict').value;if(v.trim())evaluate([v]);break}
